@@ -24,7 +24,7 @@ animal:
     access-key: access-key
     secret-key: secret-key
     endpoint: endpoint
-  phone:
+  mobile:
     secretId: secretId
     secretKey: secretKey
     smsSdkAppId: smsSdkAppId
