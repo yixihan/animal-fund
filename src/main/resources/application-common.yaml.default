@@ -1,0 +1,31 @@
+animal:
+  name: animal-fund
+  db:
+    host: 127.0.0.1
+    port: 2206
+    db: animal-fund
+    username: root
+    password: root
+    admin:
+      username: druid
+      password: druid
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 3
+    password: root
+
+  email:
+    username: example@example.com
+    password: example
+
+  oss:
+    access-key: access-key
+    secret-key: secret-key
+    endpoint: endpoint
+  phone:
+    secretId: secretId
+    secretKey: secretKey
+    smsSdkAppId: smsSdkAppId
+    signName: signName
