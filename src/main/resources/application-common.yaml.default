@@ -1,5 +1,7 @@
 animal:
   name: animal-fund
+
+  # mysql 配置
   db:
     host: 127.0.0.1
     port: 2206
@@ -10,20 +12,27 @@ animal:
       username: druid
       password: druid
 
+  # redis 配置
   redis:
     host: 127.0.0.1
     port: 6379
     database: 3
     password: root
 
+  # 邮件配置
   email:
     username: example@example.com
     password: example
 
+  # oss 配置
   oss:
     access-key: access-key
     secret-key: secret-key
     endpoint: endpoint
+    bucket-name: bucket-name
+    host: host
+
+  # 短信配置
   mobile:
     secretId: secretId
     secretKey: secretKey

@@ -94,6 +94,8 @@ oss:
   access-key: ${animal.oss.access-key}
   secret-key: ${animal.oss.secret-key}
   endpoint: ${animal.oss.endpoint}
+  bucket-name: ${animal.oss.bucket-name}
+  host: ${animal.oss.host}
 
 # mobile
 mobile:
