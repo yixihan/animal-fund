@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * description
+ * 初始化各接口权限限制
  *
  * @author yixihan
  * @date 2023/2/16 14:50

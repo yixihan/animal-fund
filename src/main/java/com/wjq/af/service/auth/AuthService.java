@@ -4,7 +4,7 @@ import com.wjq.af.dto.request.auth.AuthDtoReq;
 import com.wjq.af.dto.response.auth.AuthDtoResult;
 
 /**
- * description
+ * 认证授权 服务类
  *
  * @author yixihan
  * @date 2023/2/15 17:17

@@ -7,7 +7,6 @@ import com.wjq.af.exception.BizCodeEnum;
 import com.wjq.af.exception.BizException;
 import com.wjq.af.pojo.user.User;
 import com.wjq.af.service.auth.AuthService;
-import com.wjq.af.service.user.RoleService;
 import com.wjq.af.service.user.UserService;
 import com.wjq.af.utils.Assert;
 import com.wjq.af.utils.JwtUtils;
@@ -20,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * description
+ * 认证授权 服务实现类
  *
  * @author yixihan
  * @date 2023/2/15 17:17

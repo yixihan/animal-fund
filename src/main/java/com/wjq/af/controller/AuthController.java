@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 
 
 /**
- * description
+ * 认证授权 OpenApi
  *
  * @author yixihan
  * @date 2023/2/15 17:04
