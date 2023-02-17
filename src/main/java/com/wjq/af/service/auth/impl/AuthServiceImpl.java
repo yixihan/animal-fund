@@ -35,15 +35,15 @@ public class AuthServiceImpl implements AuthService {
     private TokenService tokenService;
     
     @Override
-    public AuthDtoResult login(AuthDtoReq dtoReq) {
+    public AuthDtoResult login(AuthDtoReq req) {
         User user = userService.lambdaQuery ()
-                .eq (User::getUserNickName, dtoReq.getUserName ())
+                .eq (User::getUserMobile, req.getMobile ())
                 .one ();
         
-        Assert.isTrue (user != null, new BizException (BizCodeEnum.ACCOUNT_NOT_FOUND));
+        Assert.notNull (user, new BizException (BizCodeEnum.ACCOUNT_NOT_FOUND));
         
         // 加密用户输入的密码
-        String md5Password = MD5Util.md5 (dtoReq.getUserPassword (), user.getUserSalt ());
+        String md5Password = MD5Util.md5 (req.getPassword (), user.getUserSalt ());
         
         // 将加密后的密码存入 user
         user.setUserPassword (md5Password);

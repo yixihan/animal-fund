@@ -16,7 +16,8 @@ public class CustomTest {
     
     @Test
     public void testAdminPassword () {
-        System.out.println (MD5Util.md5 ("123456", "awfhteshuf"));
+        String password = MD5Util.md5 ("Theyear123", "90jq4tfh5u");
+        System.out.println (password);
     }
     
     @Test

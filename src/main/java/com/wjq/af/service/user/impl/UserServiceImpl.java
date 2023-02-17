@@ -5,9 +5,11 @@ import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wjq.af.auth.enums.RoleEnums;
 import com.wjq.af.auth.service.TokenService;
+import com.wjq.af.dto.request.auth.ResetPasswordDtoReq;
 import com.wjq.af.dto.request.user.RegisterUserDtoReq;
 import com.wjq.af.dto.request.user.RegisterVolunteerDtoReq;
 import com.wjq.af.dto.response.user.UserDtoResult;
+import com.wjq.af.enums.ExamineStatusEnums;
 import com.wjq.af.exception.BizCodeEnum;
 import com.wjq.af.exception.BizException;
 import com.wjq.af.mapper.user.UserMapper;
@@ -46,15 +48,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     
     @Override
     public UserDtoResult getUserInfo(Long userId) {
-        Integer count = this.lambdaQuery ()
-                .eq (User::getId, userId)
-                .count ();
-    
-        Assert.isTrue (count == 1, BizCodeEnum.ACCOUNT_NOT_FOUND);
-    
         User user = this.lambdaQuery ()
                 .eq (User::getId, userId)
                 .one ();
+        Assert.notNull (user, BizCodeEnum.ACCOUNT_NOT_FOUND);
+    
         return BeanUtil.toBean (user, UserDtoResult.class);
     }
     
@@ -73,11 +71,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Transactional(rollbackFor = BizException.class)
     public Boolean registerVolunteer(RegisterVolunteerDtoReq req) {
         User user = BeanUtil.toBean (req, User.class);
+        user.setExamineStatus (ExamineStatusEnums.UN_EXAMINE.getValue ());
         // 保存用户表
         saveUser (user);
         // 保存角色表
         saveUserRole (user.getId (), RoleEnums.VOLUNTEER);
     
+        return Boolean.TRUE;
+    }
+    
+    @Override
+    public Boolean resetPassword(ResetPasswordDtoReq req) {
+        // TODO 验证码校验
+        
+        User user = this.lambdaQuery ()
+                .eq (User::getUserEmail, req.getEmail ())
+                .one ();
+        
+        Assert.notNull (user, BizCodeEnum.ACCOUNT_NOT_FOUND);
+        
+        // 密码加密
+        String salt = RandomUtil.randomString (10);
+        String password = MD5Util.md5 (req.getPassword (), salt);
+        user.setUserPassword (password);
+        user.setUserSalt (salt);
+        
+        Assert.isTrue (this.updateById (user), BizCodeEnum.FAILED_TYPE_BUSINESS);
+        
         return Boolean.TRUE;
     }
     

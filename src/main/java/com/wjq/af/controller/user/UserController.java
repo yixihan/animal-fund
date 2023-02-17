@@ -57,7 +57,7 @@ public class UserController {
     }
     
     @ApiOperation ("注册志愿者")
-    @PostMapping(value = "/register/user", produces = "application/json")
+    @PostMapping(value = "/register/volunteer", produces = "application/json")
     public JsonResponse<Boolean> registerVolunteer (@RequestBody @Valid RegisterVolunteerDtoReq req) {
         // 参数校验
         validateRegisterUser (req);

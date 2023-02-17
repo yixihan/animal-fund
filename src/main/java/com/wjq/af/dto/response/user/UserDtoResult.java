@@ -1,5 +1,6 @@
 package com.wjq.af.dto.response.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -45,6 +46,7 @@ public class UserDtoResult {
     private Integer userAge;
     
     @ApiModelProperty(value = "用户生日[yyyy-MM-dd]")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date userBirth;
     
     @ApiModelProperty(value = "用户身份证")

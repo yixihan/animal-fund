@@ -14,26 +14,6 @@ import java.security.MessageDigest;
  */
 public class MD5Util {
     
-    private static final String HEX_NUMS_STR = "0123456789ABCDEF";
-    
-    /**
-     * 将16进制字符串转换成字节数组
-     *
-     * @param hex 16进制字符串
-     * @return 字节数组
-     */
-    public static byte[] hexStringToByte(String hex) {
-        int len = (hex.length () / 2);
-        byte[] result = new byte[len];
-        char[] hexChars = hex.toCharArray ();
-        for (int i = 0; i < len; i++) {
-            int pos = i * 2;
-            result[i] = (byte) (HEX_NUMS_STR.indexOf (hexChars[pos]) << 4 | HEX_NUMS_STR.indexOf (hexChars[pos + 1]));
-        }
-        return result;
-    }
-    
-    
     /**
      * 将指定byte数组转换成16进制字符串
      *

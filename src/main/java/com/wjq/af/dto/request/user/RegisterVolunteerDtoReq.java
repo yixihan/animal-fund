@@ -25,7 +25,4 @@ public class RegisterVolunteerDtoReq extends RegisterUserDtoReq{
     @ApiModelProperty(value = "用户身份证明")
     @NotBlank(message = "用户身份证明不能为空")
     private String userIdCardImg;
-    
-    @ApiModelProperty(value = "审核状态[待审核: UN_EXAMINE, 审核通过: EXAMINE_SUCCESS, 审核失败:EXAMINE_FAIL]")
-    private String examineStatus;
 }

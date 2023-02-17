@@ -14,8 +14,8 @@ public interface AuthService {
     /**
      * 登录
      *
-     * @param dtoReq 请求参数
+     * @param req 请求参数
      * @return {@link AuthDtoResult}
      */
-    AuthDtoResult login(AuthDtoReq dtoReq);
+    AuthDtoResult login(AuthDtoReq req);
 }

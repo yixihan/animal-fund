@@ -9,20 +9,24 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 
 /**
- * 用户认证-dtoReq
+ * 重置密码-dtoReq
  *
  * @author yixihan
- * @date 2023/2/15 17:14
+ * @date 2023/2/17 11:20
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("用户认证-dtoReq")
-public class AuthDtoReq {
+@ApiModel("重置密码-dtoReq")
+public class ResetPasswordDtoReq {
     
-    @ApiModelProperty(value = "手机号")
-    @NotBlank(message = "手机号不能为空")
-    private String mobile;
+    @ApiModelProperty(value = "邮箱")
+    @NotBlank(message = "邮箱不能为空")
+    private String email;
+    
+    @ApiModelProperty(value = "验证码")
+    @NotBlank(message = "验证码不能为空")
+    private String code;
     
     @ApiModelProperty(value = "用户密码")
     @NotBlank(message = "密码不能为空")
