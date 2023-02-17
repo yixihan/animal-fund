@@ -19,7 +19,7 @@ import javax.validation.Valid;
 
 /**
  * <p>
- * 用户表 前端控制器
+ * 用户 OpenApi
  * </p>
  *
  * @author yixihan
