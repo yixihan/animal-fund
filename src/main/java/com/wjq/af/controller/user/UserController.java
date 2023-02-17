@@ -11,7 +11,6 @@ import com.wjq.af.utils.Assert;
 import com.wjq.af.utils.ValidationUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +43,7 @@ public class UserController {
     
     @ApiOperation ("获取用户信息")
     @GetMapping(value = "/info", produces = "application/json")
-    public JsonResponse<UserDtoResult> getCacheUserInfo (@Param ("userId") Long userId) {
+    public JsonResponse<UserDtoResult> getCacheUserInfo (@RequestParam ("userId") Long userId) {
         return JsonResponse.ok (service.getUserInfo (userId));
     }
     
