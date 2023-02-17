@@ -2,7 +2,9 @@ package com.wjq.af.auth.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wjq.af.auth.TokenService;
+import com.wjq.af.auth.service.TokenService;
+import com.wjq.af.auth.constant.AuthConstant;
+import com.wjq.af.auth.prop.IgnoreUrlsProp;
 import com.wjq.af.dto.response.JsonResponse;
 import com.wjq.af.exception.BizCodeEnum;
 import org.springframework.http.HttpMethod;
@@ -32,6 +34,17 @@ public class AuthFilter implements Filter {
     
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
     
+    /**
+     * 过滤器详细规则
+     * <p>
+     *     <li>白名单 : 直接放行</li>
+     *     <li>跨域的预检请求[Options] : 直接放行</li>
+     *     <li>请求头无 token : 快速失败 {@code BizCodeEnum.TOKEN_EXPIRED}</li>
+     *     <li>token 校验不通过 : 快速失败 {@code BizCodeEnum.TOKEN_ERR}</li>
+     *     <li>权限校验不通过 : 快速失败 {@code BizCodeEnum.NO_METHOD_ROLE}</li>
+     *     <li>以上校验均通过 : 放行</li>
+     * </p>
+     */
     @Override
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
@@ -53,13 +66,15 @@ public class AuthFilter implements Filter {
             return;
         }
         
-        // 认证校验
-        String token = request.getHeader ("Jwt-Token");
+        // 获取 token
+        String token = request.getHeader (AuthConstant.JWT_TOKEN);
         if (StrUtil.isBlank (token)) {
+            // token 为空， 直接返回
             out (response, BizCodeEnum.TOKEN_EXPIRED);
             return;
         }
-        
+    
+        // 认证校验
         if (tokenService.authentication (token) == null) {
             out (response, BizCodeEnum.TOKEN_ERR);
             return;

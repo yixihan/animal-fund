@@ -1,4 +1,4 @@
-package com.wjq.af.auth.filter;
+package com.wjq.af.auth.prop;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

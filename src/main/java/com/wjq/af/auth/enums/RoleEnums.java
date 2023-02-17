@@ -1,4 +1,4 @@
-package com.wjq.af.enums;
+package com.wjq.af.auth.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

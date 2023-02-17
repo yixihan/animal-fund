@@ -1,6 +1,6 @@
 package com.wjq.af.service.auth.impl;
 
-import com.wjq.af.auth.TokenService;
+import com.wjq.af.auth.service.TokenService;
 import com.wjq.af.dto.request.auth.AuthDtoReq;
 import com.wjq.af.dto.response.auth.AuthDtoResult;
 import com.wjq.af.exception.BizCodeEnum;

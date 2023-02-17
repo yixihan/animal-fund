@@ -1,6 +1,6 @@
 package com.wjq.af.auth.annotation;
 
-import com.wjq.af.enums.RoleEnums;
+import com.wjq.af.auth.enums.RoleEnums;
 
 import java.lang.annotation.*;
 

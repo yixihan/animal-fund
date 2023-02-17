@@ -1,7 +1,8 @@
-package com.wjq.af.auth;
+package com.wjq.af.auth.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.wjq.af.auth.cache.AuthRedisCacheService;
+import com.wjq.af.auth.constant.AuthConstant;
 import com.wjq.af.dto.response.auth.AuthDtoResult;
 import com.wjq.af.dto.response.user.RoleDtoResult;
 import com.wjq.af.dto.response.user.UserDtoResult;
@@ -15,6 +16,7 @@ import com.wjq.af.utils.JwtUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -34,6 +36,9 @@ public class TokenService {
     
     @Resource
     private AuthRedisCacheService cacheService;
+    
+    @Resource
+    private HttpServletRequest request;
     
     private static final String USER_ID = "userId";
     
@@ -88,6 +93,43 @@ public class TokenService {
         return roleList.stream ()
                 .map (RoleDtoResult::getId)
                 .anyMatch (roleIdList::contains);
+    }
+    
+    /**
+     * 获取当前登录用户认证信息
+     *
+     * @return {@link AuthDtoResult}
+     */
+    public AuthDtoResult getCacheAuthInfo () {
+        String token = request.getHeader (AuthConstant.JWT_TOKEN);
+        return cacheService.get (token);
+    }
+    
+    /**
+     * 获取当前登录用户用户信息
+     *
+     * @return {@link UserDtoResult}
+     */
+    public UserDtoResult getCacheUser () {
+        return getCacheAuthInfo ().getUser ();
+    }
+    
+    /**
+     * 获取当前登录用户用户 ID
+     *
+     * @return UserId
+     */
+    public Long getCacheUserId () {
+        return getCacheUser ().getId ();
+    }
+    
+    /**
+     * 获取当前登录用户角色列表
+     *
+     * @return {@link RoleDtoResult}
+     */
+    public List<RoleDtoResult> getCacheUserRoleList () {
+        return getCacheAuthInfo ().getRoleList ();
     }
     
     /**

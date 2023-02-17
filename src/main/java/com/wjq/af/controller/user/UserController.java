@@ -3,8 +3,9 @@ package com.wjq.af.controller.user;
 
 import com.wjq.af.auth.annotation.RoleAccess;
 import com.wjq.af.auth.cache.AuthRedisCacheService;
+import com.wjq.af.auth.constant.AuthConstant;
 import com.wjq.af.dto.response.user.UserDtoResult;
-import com.wjq.af.enums.RoleEnums;
+import com.wjq.af.auth.enums.RoleEnums;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,7 @@ public class UserController {
     @GetMapping(value = "/info/cache", produces = "application/json")
     public UserDtoResult getUserInfo () {
         
-        return cacheService.get (request.getHeader ("Jwt-Token")).getUser ();
+        return cacheService.get (request.getHeader (AuthConstant.JWT_TOKEN)).getUser ();
     }
 
 }
