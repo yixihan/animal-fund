@@ -46,7 +46,7 @@ public class AuthRedisCacheService {
     public AuthDtoResult get (String token) {
         Object jsonStr = redisTemplate.opsForHash ().get (AuthConstant.AUTH_KEY, token);
     
-        Assert.isNotNull (jsonStr, BizCodeEnum.TOKEN_ERR);
+        Assert.notNull (jsonStr, BizCodeEnum.TOKEN_ERR);
         
         return JSONUtil.toBean (jsonStr.toString (), AuthDtoResult.class);
     }
@@ -79,7 +79,7 @@ public class AuthRedisCacheService {
     public List<Long> getResource (String requestUri) {
         Object jsonStr = redisTemplate.opsForHash ().get (AuthConstant.RESOURCE_KEY, requestUri);
     
-        Assert.isNotNull (jsonStr, BizCodeEnum.NULL_ERR);
+        Assert.notNull (jsonStr, BizCodeEnum.NULL_ERR);
         
         return JSONUtil.parseArray (jsonStr.toString ()).toList (RoleEnums.class).stream ()
                 .map (RoleEnums::getRoleId).collect(Collectors.toList());

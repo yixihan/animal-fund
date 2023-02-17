@@ -57,7 +57,7 @@ public class TokenService {
         User user = userService.getById (userId);
     
         // 账户不存在
-        Assert.isNotNull (user, BizCodeEnum.ACCOUNT_NOT_FOUND);
+        Assert.notNull (user, BizCodeEnum.ACCOUNT_NOT_FOUND);
         
         // token 过期
         Assert.isTrue (JwtUtils.validateDate (token), BizCodeEnum.TOKEN_EXPIRED);
