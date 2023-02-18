@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * description
+ * 审核状态 枚举类
  *
  * @author yixihan
  * @date 2023/2/17 14:12

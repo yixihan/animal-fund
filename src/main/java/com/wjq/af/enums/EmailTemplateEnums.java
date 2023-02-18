@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * description
+ * 邮件模板 枚举类
  *
  * @author yixihan
  * @date 2023/2/17 15:59
