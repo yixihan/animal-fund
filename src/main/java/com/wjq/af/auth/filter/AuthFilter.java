@@ -7,6 +7,7 @@ import com.wjq.af.auth.constant.AuthConstant;
 import com.wjq.af.auth.prop.IgnoreUrlsProp;
 import com.wjq.af.dto.response.JsonResponse;
 import com.wjq.af.exception.BizCodeEnum;
+import com.wjq.af.exception.BizException;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -48,46 +49,50 @@ public class AuthFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
-                         FilterChain filterChain) throws IOException, ServletException {
+                         FilterChain filterChain) throws IOException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
     
         String uri = request.getRequestURI ();
-        
-        // 白名单, 直接放行
-        if (ignoreUrls.getUrls ().stream().anyMatch ((item) -> pathMatcher.match (item, uri))) {
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
-        }
-        
-        // 对应跨域的预检请求直接放行
-        if (HttpMethod.OPTIONS.name ().equals (request.getMethod ())) {
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
-        }
-        
-        // 获取 token
-        String token = request.getHeader (AuthConstant.JWT_TOKEN);
-        if (StrUtil.isBlank (token)) {
-            // token 为空， 直接返回
-            out (response, BizCodeEnum.TOKEN_EXPIRED);
-            return;
-        }
     
-        // 认证校验
-        if (tokenService.authentication (token) == null) {
+        try {
+            // 白名单, 直接放行
+            if (ignoreUrls.getUrls ().stream().anyMatch ((item) -> pathMatcher.match (item, uri))) {
+                filterChain.doFilter(servletRequest, servletResponse);
+                return;
+            }
+        
+            // 对应跨域的预检请求直接放行
+            if (HttpMethod.OPTIONS.name ().equals (request.getMethod ())) {
+                filterChain.doFilter(servletRequest, servletResponse);
+                return;
+            }
+        
+            // 获取 token
+            String token = request.getHeader (AuthConstant.JWT_TOKEN);
+            if (StrUtil.isBlank (token)) {
+                // token 为空， 直接返回
+                out (response, BizCodeEnum.TOKEN_EXPIRED);
+                return;
+            }
+        
+            // 认证校验
+            if (tokenService.authentication (token) == null) {
+                out (response, BizCodeEnum.TOKEN_ERR);
+                return;
+            }
+        
+            // 权限校验
+            if (!tokenService.authorization (token, uri)) {
+                out (response, BizCodeEnum.NO_METHOD_ROLE);
+                return;
+            }
+        
+            //执行
+            filterChain.doFilter(servletRequest, servletResponse);
+        } catch (IOException | ServletException | BizException e) {
             out (response, BizCodeEnum.TOKEN_ERR);
-            return;
         }
-
-        // 权限校验
-        if (!tokenService.authorization (token, uri)) {
-            out (response, BizCodeEnum.NO_METHOD_ROLE);
-            return;
-        }
-    
-        //执行
-        filterChain.doFilter(servletRequest, servletResponse);
     }
     
     /**

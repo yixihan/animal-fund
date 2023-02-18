@@ -34,7 +34,9 @@ public class AuthRedisCacheService {
      * @param auth 登录信息
      */
     public void put (String token, AuthDtoResult auth) {
-        redisTemplate.opsForHash ().put (AuthConstant.AUTH_KEY, token, JSONUtil.toJsonStr (auth));
+        if (!contains (token)) {
+            redisTemplate.opsForHash ().put (AuthConstant.AUTH_KEY, token, JSONUtil.toJsonStr (auth));
+        }
     }
     
     /**
@@ -44,11 +46,23 @@ public class AuthRedisCacheService {
      * @return 登录信息
      */
     public AuthDtoResult get (String token) {
+        Assert.isTrue (contains (token), BizCodeEnum.TOKEN_ERR);
+        
         Object jsonStr = redisTemplate.opsForHash ().get (AuthConstant.AUTH_KEY, token);
     
         Assert.notNull (jsonStr, BizCodeEnum.TOKEN_ERR);
         
         return JSONUtil.toBean (jsonStr.toString (), AuthDtoResult.class);
+    }
+    
+    /**
+     * 判断缓存中是否有用户信息
+     *
+     * @param token jwtToken
+     * @return 有 : true | 无 : false
+     */
+    public Boolean contains (String token) {
+        return redisTemplate.opsForHash ().get (AuthConstant.AUTH_KEY, token) != null;
     }
     
     /**

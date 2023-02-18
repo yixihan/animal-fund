@@ -7,6 +7,8 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
 import cn.hutool.jwt.JWTValidator;
+import com.wjq.af.exception.BizCodeEnum;
+import com.wjq.af.exception.BizException;
 
 import java.util.Date;
 import java.util.Map;
@@ -65,11 +67,15 @@ public class JwtUtils {
      * @param targetClass 载荷内容类型
      * @return 载荷内容
      */
-    public static <T> T analysis (String token, String payloadName, Class<T> targetClass) {
-        // 获取 JWT
-        JWT jwt = JWT.of(token);
-    
-        return Convert.convert (targetClass, jwt.getPayload ().getClaim (payloadName));
+    public static <T> T analysis (String token, String payloadName, Class<T> targetClass) throws BizException{
+        try {
+            // 获取 JWT
+            JWT jwt = JWT.of(token);
+        
+            return Convert.convert (targetClass, jwt.getPayload ().getClaim (payloadName));
+        } catch (Exception e) {
+            throw new BizException (BizCodeEnum.TOKEN_ERR);
+        }
     }
     
     /**
