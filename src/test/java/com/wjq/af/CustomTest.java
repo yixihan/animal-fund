@@ -33,4 +33,25 @@ public class CustomTest {
         String emailContent = String.format (emailTemplate, "https://localhost:18997/index.html");
         System.out.println (emailContent);
     }
+    
+    /*
+HUNGER, 饥饿
+TRAUMA_LIGHTER, 外伤 (较轻)
+TRAUMA_SERIOUS, 外伤 (较重)
+PREGNANT, 怀孕
+STERILIZATION, 绝育
+RABIES, 狂犬病
+TRACHEITIS, 气管炎
+STOMATITIS, 口腔炎
+SKIN_DISEASE, 皮肤病
+CANINE_DISTEMPER, 犬瘟
+OTHER, 其他
+
+CAT, 猫
+BIT_DOG, 大型犬
+SMALL_DOG, 小型犬
+RABBIT, 兔子
+BIRD, 鸟类
+OTHER, 其他
+     */
 }

@@ -16,12 +16,12 @@ public enum InjuryDegreeEnums {
     /**
      * 饥饿
      */
-    HUNGER ("hunger", "饥饿"),
+    HUNGER ("HUNGER", "饥饿"),
     
     /**
      * 外伤 (较轻)
      */
-    TRAUMA_LIGHTER ("hunger", "外伤 (较轻)"),
+    TRAUMA_LIGHTER ("TRAUMA_LIGHTER", "外伤 (较轻)"),
     
     /**
      * 外伤 (较重)

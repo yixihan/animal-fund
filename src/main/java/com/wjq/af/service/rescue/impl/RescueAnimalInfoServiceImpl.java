@@ -9,6 +9,7 @@ import com.wjq.af.dto.request.rescue.QueryRescueAnimalInfoDtoReq;
 import com.wjq.af.dto.request.rescue.UserRescueAnimalInfoDtoReq;
 import com.wjq.af.dto.response.PageDtoResult;
 import com.wjq.af.dto.response.rescue.RescueAnimalInfoDtoResult;
+import com.wjq.af.enums.ExamineStatusEnums;
 import com.wjq.af.exception.BizCodeEnum;
 import com.wjq.af.pojo.rescue.RescueAnimalInfo;
 import com.wjq.af.mapper.rescue.RescueAnimalInfoMapper;
@@ -38,6 +39,7 @@ public class RescueAnimalInfoServiceImpl extends ServiceImpl<RescueAnimalInfoMap
     public void add(ModifyRescueAnimalInfoDtoReq req) {
         RescueAnimalInfo rescueAnimalInfo = BeanUtil.toBean (req, RescueAnimalInfo.class);
         rescueAnimalInfo.setUserId (tokenService.getCacheUserId ());
+        rescueAnimalInfo.setExamineStatus (ExamineStatusEnums.UN_EXAMINE.getValue ());
     
         Assert.isTrue (this.save (rescueAnimalInfo), BizCodeEnum.FAILED_TYPE_BUSINESS);
     }
@@ -81,6 +83,9 @@ public class RescueAnimalInfoServiceImpl extends ServiceImpl<RescueAnimalInfoMap
     
     @Override
     public PageDtoResult<RescueAnimalInfoDtoResult> userRecords(UserRescueAnimalInfoDtoReq req) {
+        if (req.getUserId () == null) {
+            req.setUserId (tokenService.getCacheUserId ());
+        }
         Page<RescueAnimalInfo> pages = this.lambdaQuery ()
                 .eq (RescueAnimalInfo::getUserId, req.getUserId ())
                 .orderByDesc (RescueAnimalInfo::getCreateTime)

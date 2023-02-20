@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@ApiModel("搜索救援动物信息-dtoReq")
+@ApiModel("用户发布过的救援动物信息-dtoReq")
 public class UserRescueAnimalInfoDtoReq extends PageDtoReq {
     
     @ApiModelProperty(value = "用户 id")
