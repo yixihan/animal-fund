@@ -107,6 +107,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         tokenService.logout ();
     }
     
+    @Override
+    public void cancellation() {
+        // 删除账户
+        this.removeById (tokenService.getCacheUserId ());
+        // 登出
+        logout ();
+    }
+    
     /**
      * 新增用户角色
      *

@@ -58,4 +58,9 @@ public interface UserService extends IService<User> {
      *
      */
     void logout();
+    
+    /**
+     * 用户注销
+     */
+    void cancellation();
 }

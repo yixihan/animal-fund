@@ -78,6 +78,12 @@ public class UserController {
         service.logout ();
     }
     
+    @ApiOperation ("注销账户")
+    @DeleteMapping(value = "/cancellation", produces = "application/json")
+    public void cancellation () {
+        service.cancellation ();
+    }
+    
     /**
      * 用户注册, 参数校验
      *
