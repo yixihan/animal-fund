@@ -11,6 +11,7 @@ import com.wjq.af.utils.Assert;
 import com.wjq.af.utils.ValidationUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,11 +26,12 @@ import javax.validation.Valid;
  * @author yixihan
  * @since 2023-02-15
  */
-@Api(tags = "用户 OpenApi")
+@Slf4j
 @RoleAccess
 @Validated
 @RestController
 @RequestMapping("/open/user")
+@Api(tags = "用户 OpenApi")
 public class UserController {
     
     @Resource

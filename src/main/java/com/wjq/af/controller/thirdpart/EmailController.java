@@ -5,6 +5,8 @@ import com.wjq.af.dto.request.thirdpart.EmailValidateDtoReq;
 import com.wjq.af.service.thirdpart.EmailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +20,11 @@ import javax.annotation.Resource;
  * @author yixihan
  * @date 2023/2/17 15:42
  */
-@Api(tags = "邮件 openApi")
+@Slf4j
+@Validated
 @RestController
 @RequestMapping("/open/thirdpart/email")
+@Api(tags = "邮件 openApi")
 public class EmailController {
     
     @Resource

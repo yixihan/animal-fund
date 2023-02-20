@@ -1,5 +1,4 @@
-package com.wjq.af.controller.user;
-
+package com.wjq.af.controller.report;
 
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
@@ -9,17 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 角色 OpenApi
+ * 审核 OpenApi
  * </p>
  *
  * @author yixihan
- * @since 2023-02-15
+ * @date 2023/2/20 10:44
  */
 @Slf4j
 @Validated
 @RestController
-@RequestMapping("/open/role")
-@Api(tags = "角色 OpenApi")
-public class RoleController {
-
+@RequestMapping("/open/report")
+@Api(tags = "审核 OpenApi")
+public class ReportController {
 }

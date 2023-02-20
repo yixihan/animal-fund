@@ -5,6 +5,8 @@ import com.wjq.af.dto.response.JsonResponse;
 import com.wjq.af.service.thirdpart.OSSService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +21,11 @@ import java.util.Map;
  * @author yixihan
  * @date 2023/2/18 11:12
  */
-@Api(tags = "文件上传 openApi")
+@Slf4j
+@Validated
 @RestController
 @RequestMapping("/open/thirdpart/oss")
+@Api(tags = "文件上传 openApi")
 public class OSSController {
     
     @Resource

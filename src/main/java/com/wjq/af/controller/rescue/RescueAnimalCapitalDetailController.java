@@ -1,4 +1,4 @@
-package com.wjq.af.controller.user;
+package com.wjq.af.controller.rescue;
 
 
 import io.swagger.annotations.Api;
@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 角色 OpenApi
+ * 救援动物资金明细表 前端控制器
  * </p>
  *
  * @author yixihan
- * @since 2023-02-15
+ * @since 2023-02-20
  */
 @Slf4j
 @Validated
 @RestController
-@RequestMapping("/open/role")
-@Api(tags = "角色 OpenApi")
-public class RoleController {
+@RequestMapping("/open/rescue/capital")
+@Api(tags = "救援动物资金明细 OpenApi")
+public class RescueAnimalCapitalDetailController {
 
 }
