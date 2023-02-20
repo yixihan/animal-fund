@@ -1,35 +1,26 @@
-package com.wjq.af.pojo.rescue;
+package com.wjq.af.dto.response.rescue;
 
-import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 救援动物信息表
+ * 搜索救援动物信息-dtoResult
  *
  * @author yixihan
- * @since 2023-02-20
+ * @date 2023/2/20 16:59
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@ApiModel(value = "RescueAnimalInfo对象", description = "救援动物信息表")
-public class RescueAnimalInfo implements Serializable {
-    
-    private static final long serialVersionUID = 1L;
+@ApiModel("搜索救援动物信息-dtoResult")
+public class RescueAnimalInfoDtoResult {
     
     @ApiModelProperty(value = "主键 ID")
-    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     
     @ApiModelProperty(value = "申请用户 ID")
@@ -60,48 +51,8 @@ public class RescueAnimalInfo implements Serializable {
     private String examineStatus;
     
     @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
     
     @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
-    
-    @ApiModelProperty(value = "乐观锁")
-    @Version
-    private Integer version;
-    
-    @ApiModelProperty(value = "逻辑删除")
-    @TableLogic
-    private Integer delFlag;
-    
-    
-    public static final String ID = "id";
-    
-    public static final String USER_ID = "user_id";
-    
-    public static final String ANIMAL_TYPE = "animal_type";
-    
-    public static final String ANIMAL_GENDER = "animal_gender";
-    
-    public static final String INJURY_DEGREE = "injury_degree";
-    
-    public static final String ADDRESS = "address";
-    
-    public static final String ADDRESS_DETAIL = "address_detail";
-    
-    public static final String APPLY_REASON = "apply_reason";
-    
-    public static final String APPLY_IMG = "apply_img";
-    
-    public static final String EXAMINE_STATUS = "examine_status";
-    
-    public static final String CREATE_TIME = "create_time";
-    
-    public static final String UPDATE_TIME = "update_time";
-    
-    public static final String VERSION = "version";
-    
-    public static final String DEL_FLAG = "del_flag";
-    
 }
