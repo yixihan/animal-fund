@@ -34,9 +34,7 @@ public class AuthRedisCacheService {
      * @param auth  登录信息
      */
     public void put(String token, AuthDtoResult auth) {
-        if (!contains (token)) {
-            redisTemplate.opsForHash ().put (AuthConstant.AUTH_KEY, token, JSONUtil.toJsonStr (auth));
-        }
+        redisTemplate.opsForHash ().put (AuthConstant.AUTH_KEY, token, JSONUtil.toJsonStr (auth));
     }
     
     /**
