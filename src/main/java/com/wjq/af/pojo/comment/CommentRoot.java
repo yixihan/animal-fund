@@ -32,9 +32,6 @@ public class CommentRoot implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     
-    @ApiModelProperty(value = "回复留言板主键 ID")
-    private Long replyId;
-    
     @ApiModelProperty(value = "发送用户 ID")
     private Long userId;
     
