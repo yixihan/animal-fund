@@ -44,11 +44,11 @@ public class OSSServiceImpl implements OSSService {
             long expireEndTime = System.currentTimeMillis () + expireTime * 1000;
             Date expiration = new Date (expireEndTime);
             // PostObject请求最大可支持的文件大小为5 GB，即CONTENT_LENGTH_RANGE为5*1024*1024*1024。
-            PolicyConditions policyConds = new PolicyConditions ();
-            policyConds.addConditionItem (PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, 1048576000);
-            policyConds.addConditionItem (MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
+            PolicyConditions policyConditions = new PolicyConditions ();
+            policyConditions.addConditionItem (PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, 1048576000);
+            policyConditions.addConditionItem (MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
             
-            String postPolicy = ossClient.generatePostPolicy (expiration, policyConds);
+            String postPolicy = ossClient.generatePostPolicy (expiration, policyConditions);
             byte[] binaryData = postPolicy.getBytes (StandardCharsets.UTF_8);
             String encodedPolicy = BinaryUtil.toBase64String (binaryData);
             String postSignature = ossClient.calculatePostSignature (postPolicy);

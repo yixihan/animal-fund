@@ -34,15 +34,15 @@ public class RealNameAuthServiceImpl implements RealNameAuthService {
     
     @Override
     public void auth(RealNameAuthDtoReq req) {
-        Map<String, Object> bodys = new HashMap<> ();
-        bodys.put ("name", req.getRealName ());
-        bodys.put ("id_number", req.getIdCard ());
+        Map<String, Object> requestBody = new HashMap<> ();
+        requestBody.put ("name", req.getRealName ());
+        requestBody.put ("id_number", req.getIdCard ());
     
         
         try (HttpResponse response = HttpRequest.post (prop.getUrl ())
                 .auth (String.format (AUTHORIZATION_CONTENT, prop.getAppCode ()))
                 .contentType ("application/x-www-form-urlencoded; charset=UTF-8")
-                .form (bodys)
+                .form (requestBody)
                 .execute ()) {
     
             // 获取 http status 400 表示库无
