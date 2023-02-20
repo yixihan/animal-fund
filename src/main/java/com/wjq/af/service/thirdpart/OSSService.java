@@ -11,7 +11,7 @@ import java.util.Map;
  * @date 2022-10-24-15:19
  */
 public interface OSSService {
-
+    
     /**
      * 获取上传密钥
      *

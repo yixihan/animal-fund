@@ -155,19 +155,6 @@ thirdpart:
     bucket-name: ${animal.oss.bucket-name}
     host: ${animal.oss.host}
 
-  # 短信配置
-  mobile:
-    secretId: ${animal.mobile.secretId}
-    secretKey: ${animal.mobile.secretKey}
-    smsSdkAppId: ${animal.mobile.smsSdkAppId}
-    signName: ${animal.mobile.signName}
-
-    # redis key
-    login-key: sms:login:%s
-    register-key: sms:register:%s
-    update-password-key: sms:updatePassword:%s
-    common-key: sms:common:%s
-
   # 邮件配置
   email:
     # 邮件发送人姓名
@@ -175,12 +162,8 @@ thirdpart:
     title: ${animal.name}
 
     # redis key
-    login-key: email:login:%s
-    register-key: email:register:%s
     update-password-key: email:update-password:%s
     common-key: email:common:%s
-    examine-key: email:examine:%s
-    report-key: email:report:%s
 
 
 # actuator

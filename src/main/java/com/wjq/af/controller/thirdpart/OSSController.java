@@ -28,8 +28,8 @@ public class OSSController {
     private OSSService service;
     
     @ApiOperation(value = "获取上传密钥")
-    @PostMapping(value = "/upload/policy")
-    JsonResponse<Map<String, String>> policy (@RequestBody OSSPolicyDtoReq req) {
+    @PostMapping(value = "/upload/policy", produces = "application/json")
+    JsonResponse<Map<String, String>> policy(@RequestBody OSSPolicyDtoReq req) {
         return JsonResponse.ok (service.policy (req));
     }
 }

@@ -1,7 +1,7 @@
 package com.wjq.af.service.user;
 
-import com.wjq.af.pojo.user.UserRole;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wjq.af.pojo.user.UserRole;
 
 /**
  * <p>

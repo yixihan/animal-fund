@@ -22,10 +22,10 @@ public class OSSConfig {
     
     @Bean
     public OSS oss() {
-        return new OSSClientBuilder ()
-                .build (prop.getEndpoint (),
-                        prop.getAccessKey (),
-                        prop.getSecretKey ()
-                );
+        return new OSSClientBuilder ().build (
+                prop.getEndpoint (),
+                prop.getAccessKey (),
+                prop.getSecretKey ()
+        );
     }
 }

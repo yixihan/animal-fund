@@ -16,9 +16,9 @@ public interface PhotoCodeService {
      * 生成图片验证码
      *
      * @param response response
-     * @param uuid 随机 ID
+     * @param uuid     随机 ID
      */
-    void createCode(HttpServletResponse response, String uuid);
+    void create(HttpServletResponse response, String uuid);
     
     /**
      * 验证图片验证码

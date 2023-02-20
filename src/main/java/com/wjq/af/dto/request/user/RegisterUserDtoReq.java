@@ -51,7 +51,7 @@ public class RegisterUserDtoReq {
     
     @ApiModelProperty(value = "用户年龄 [0-150]")
     @NotNull(message = "用户年龄不能为空")
-    @Min (value = 0, message = "用户年龄不能小于0")
+    @Min(value = 0, message = "用户年龄不能小于0")
     @Max(value = 150, message = "用户年龄不能大于150")
     private Integer userAge;
     

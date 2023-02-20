@@ -1,11 +1,11 @@
 package com.wjq.af.service.user;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.wjq.af.dto.request.auth.ResetPasswordDtoReq;
 import com.wjq.af.dto.request.user.RegisterUserDtoReq;
 import com.wjq.af.dto.request.user.RegisterVolunteerDtoReq;
 import com.wjq.af.dto.response.user.UserDtoResult;
 import com.wjq.af.pojo.user.User;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>

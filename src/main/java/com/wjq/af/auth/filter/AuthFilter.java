@@ -2,9 +2,9 @@ package com.wjq.af.auth.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wjq.af.auth.service.TokenService;
 import com.wjq.af.auth.constant.AuthConstant;
 import com.wjq.af.auth.prop.IgnoreUrlsProp;
+import com.wjq.af.auth.service.TokenService;
 import com.wjq.af.dto.response.JsonResponse;
 import com.wjq.af.exception.BizCodeEnum;
 import com.wjq.af.exception.BizException;
@@ -33,17 +33,17 @@ public class AuthFilter implements Filter {
     @Resource
     private TokenService tokenService;
     
-    private final AntPathMatcher pathMatcher = new AntPathMatcher();
+    private final AntPathMatcher pathMatcher = new AntPathMatcher ();
     
     /**
      * 过滤器详细规则
      * <p>
-     *     <li>白名单 : 直接放行</li>
-     *     <li>跨域的预检请求[Options] : 直接放行</li>
-     *     <li>请求头无 token : 快速失败 {@code BizCodeEnum.TOKEN_EXPIRED}</li>
-     *     <li>token 校验不通过 : 快速失败 {@code BizCodeEnum.TOKEN_ERR}</li>
-     *     <li>权限校验不通过 : 快速失败 {@code BizCodeEnum.NO_METHOD_ROLE}</li>
-     *     <li>以上校验均通过 : 放行</li>
+     * <li>白名单 : 直接放行</li>
+     * <li>跨域的预检请求[Options] : 直接放行</li>
+     * <li>请求头无 token : 快速失败 {@code BizCodeEnum.TOKEN_EXPIRED}</li>
+     * <li>token 校验不通过 : 快速失败 {@code BizCodeEnum.TOKEN_ERR}</li>
+     * <li>权限校验不通过 : 快速失败 {@code BizCodeEnum.NO_METHOD_ROLE}</li>
+     * <li>以上校验均通过 : 放行</li>
      * </p>
      */
     @Override
@@ -52,22 +52,22 @@ public class AuthFilter implements Filter {
                          FilterChain filterChain) throws IOException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-    
+        
         String uri = request.getRequestURI ();
-    
+        
         try {
             // 白名单, 直接放行
-            if (ignoreUrls.getUrls ().stream().anyMatch ((item) -> pathMatcher.match (item, uri))) {
-                filterChain.doFilter(servletRequest, servletResponse);
+            if (ignoreUrls.getUrls ().stream ().anyMatch ((item) -> pathMatcher.match (item, uri))) {
+                filterChain.doFilter (servletRequest, servletResponse);
                 return;
             }
-        
+            
             // 对应跨域的预检请求直接放行
             if (HttpMethod.OPTIONS.name ().equals (request.getMethod ())) {
-                filterChain.doFilter(servletRequest, servletResponse);
+                filterChain.doFilter (servletRequest, servletResponse);
                 return;
             }
-        
+            
             // 获取 token
             String token = request.getHeader (AuthConstant.JWT_TOKEN);
             if (StrUtil.isBlank (token)) {
@@ -75,21 +75,21 @@ public class AuthFilter implements Filter {
                 out (response, BizCodeEnum.TOKEN_EXPIRED);
                 return;
             }
-        
+            
             // 认证校验
             if (tokenService.authentication (token) == null) {
                 out (response, BizCodeEnum.TOKEN_ERR);
                 return;
             }
-        
+            
             // 权限校验
             if (!tokenService.authorization (token, uri)) {
                 out (response, BizCodeEnum.NO_METHOD_ROLE);
                 return;
             }
-        
+            
             //执行
-            filterChain.doFilter(servletRequest, servletResponse);
+            filterChain.doFilter (servletRequest, servletResponse);
         } catch (IOException | ServletException | BizException e) {
             out (response, BizCodeEnum.TOKEN_ERR);
         }
@@ -101,10 +101,10 @@ public class AuthFilter implements Filter {
     private void out(ServletResponse response, BizCodeEnum rs) throws IOException {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         ObjectMapper mapper = new ObjectMapper ();
-        String jsonRes = mapper.writeValueAsString(JsonResponse.error (rs));
-        httpServletResponse.setCharacterEncoding("UTF-8");
-        httpServletResponse.setContentType("application/json; charset=utf-8");
-        httpServletResponse.getOutputStream().write(jsonRes.getBytes());
+        String jsonRes = mapper.writeValueAsString (JsonResponse.error (rs));
+        httpServletResponse.setCharacterEncoding ("UTF-8");
+        httpServletResponse.setContentType ("application/json; charset=utf-8");
+        httpServletResponse.getOutputStream ().write (jsonRes.getBytes ());
     }
     
 }

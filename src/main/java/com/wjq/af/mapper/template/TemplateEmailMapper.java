@@ -1,8 +1,7 @@
 package com.wjq.af.mapper.template;
 
-import com.wjq.af.pojo.template.TemplateEmail;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
+import com.wjq.af.pojo.template.TemplateEmail;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

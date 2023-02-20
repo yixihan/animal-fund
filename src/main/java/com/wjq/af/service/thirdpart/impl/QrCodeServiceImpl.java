@@ -23,22 +23,16 @@ import java.io.IOException;
 public class QrCodeServiceImpl implements QrCodeService {
     
     @Override
-    public void createCode(HttpServletResponse response, String param) {
+    public void create(HttpServletResponse response, String param) {
         // 生成指定url对应的二维码到文件，宽和高都是300像素
         try {
-//            String dir = System.getProperty ("user.dir");
+            // String dir = System.getProperty ("user.dir");
             QrConfig config = QrConfig.create ()
                     // 设置背景
-//                    .setImg (dir + "/logo/logo.png")
-                    .setWidth (300)
-                    .setHeight (300)
-                    .setErrorCorrection (ErrorCorrectionLevel.H);
+                    // .setImg (dir + "/logo/logo.png")
+                    .setWidth (300).setHeight (300).setErrorCorrection (ErrorCorrectionLevel.H);
             
-            QrCodeUtil.generate(
-                    param, config,
-                    ImgUtil.IMAGE_TYPE_PNG,
-                    response.getOutputStream ()
-            );
+            QrCodeUtil.generate (param, config, ImgUtil.IMAGE_TYPE_PNG, response.getOutputStream ());
         } catch (IOException e) {
             throw new BizException (e);
         }

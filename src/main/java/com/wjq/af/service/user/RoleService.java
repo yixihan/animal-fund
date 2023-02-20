@@ -1,8 +1,8 @@
 package com.wjq.af.service.user;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.wjq.af.dto.response.user.RoleDtoResult;
 import com.wjq.af.pojo.user.Role;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -22,6 +22,6 @@ public interface RoleService extends IService<Role> {
      * @param userId 用户 ID
      * @return {@link RoleDtoResult}
      */
-    List<RoleDtoResult> getUserRoleList (Long userId);
-
+    List<RoleDtoResult> getUserRoleList(Long userId);
+    
 }

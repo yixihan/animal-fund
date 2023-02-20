@@ -1,9 +1,9 @@
 package com.wjq.af.service.user.impl;
 
-import com.wjq.af.pojo.user.UserRole;
-import com.wjq.af.mapper.user.UserRoleMapper;
-import com.wjq.af.service.user.UserRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wjq.af.mapper.user.UserRoleMapper;
+import com.wjq.af.pojo.user.UserRole;
+import com.wjq.af.service.user.UserRoleService;
 import org.springframework.stereotype.Service;
 
 /**

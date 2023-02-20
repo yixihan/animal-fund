@@ -32,10 +32,10 @@ import java.util.Arrays;
 public class BootStrap {
     
     public static void main(String[] args) {
-        SpringApplication springApplication = new SpringApplication(BootStrap.class);
-        Environment env = springApplication.run(args).getEnvironment();
-        log.info("animal fund server has started : {}, CPU core : {}",
-                Arrays.toString(env.getActiveProfiles()), Runtime.getRuntime().availableProcessors());
+        SpringApplication springApplication = new SpringApplication (BootStrap.class);
+        Environment env = springApplication.run (args).getEnvironment ();
+        log.info ("animal fund server has started : {}, CPU core : {}",
+                Arrays.toString (env.getActiveProfiles ()), Runtime.getRuntime ().availableProcessors ());
     }
     
 }

@@ -20,11 +20,10 @@ public class GlobalExceptionHandler {
     
     /**
      * 通用业务异常捕获
-     *
      */
     @ResponseBody
     @ExceptionHandler(value = BizException.class)
-    public JsonResponse<Object> handleBizException (BizException e) {
+    public JsonResponse<Object> handleBizException(BizException e) {
         log.error ("出现异常", e);
         return JsonResponse.error (e.getMessage ());
     }
@@ -33,7 +32,6 @@ public class GlobalExceptionHandler {
      * 参数校验异常捕获
      * <br>
      * 针对表单格式校验异常
-     *
      */
     @ResponseBody
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -46,7 +44,6 @@ public class GlobalExceptionHandler {
      * 参数校验异常捕获
      * <br>
      * 针对 json 格式校验异常
-     *
      */
     @ResponseBody
     @ExceptionHandler(value = BindException.class)
@@ -57,14 +54,14 @@ public class GlobalExceptionHandler {
     
     @ResponseBody
     @ExceptionHandler(value = NullPointerException.class)
-    public JsonResponse<Object> handleNullPointerException (NullPointerException e) {
+    public JsonResponse<Object> handleNullPointerException(NullPointerException e) {
         log.error ("出现异常", e);
         return JsonResponse.error (e.getMessage ());
     }
     
     @ResponseBody
     @ExceptionHandler(value = RuntimeException.class)
-    public JsonResponse<Object> handleRuntimeException (RuntimeException e) {
+    public JsonResponse<Object> handleRuntimeException(RuntimeException e) {
         log.error ("出现异常", e);
         return JsonResponse.error (e.getMessage ());
     }
@@ -72,7 +69,7 @@ public class GlobalExceptionHandler {
     
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public JsonResponse<Object> handleException (Exception e) {
+    public JsonResponse<Object> handleException(Exception e) {
         log.error ("出现异常", e);
         return JsonResponse.error (e.getMessage ());
     }

@@ -32,14 +32,14 @@ public class JwtUtils {
      * <li> JwtToken 内存储的信息为 用户 id, 用户名, 为 String 类型的数据</li>
      * <li>传入的签名为用户加密后的密码</li>
      *
-     * @param secret 用户加密后的密码
+     * @param secret  用户加密后的密码
      * @param payload 有效载荷
      * @return JwtToken
      */
-    public static String createJwtToken (String secret, Map<String, Object> payload) {
+    public static String createJwtToken(String secret, Map<String, Object> payload) {
         // 获取当前时间
-        Date nowTime = DateUtil.date();
-    
+        Date nowTime = DateUtil.date ();
+        
         // 设置过期时间
         Date expireTime = DateUtil.offsetDay (nowTime, EXPIRE_TIME);
         
@@ -56,22 +56,22 @@ public class JwtUtils {
                 .setExpiresAt (expireTime)
                 // 设置签名
                 .setKey (StrUtil.bytes (secret))
-                .sign();
+                .sign ();
     }
     
     /**
      * 获取 JwtToken 有效载荷内容
      *
-     * @param token JwtToken
+     * @param token       JwtToken
      * @param payloadName 载荷名
      * @param targetClass 载荷内容类型
      * @return 载荷内容
      */
-    public static <T> T analysis (String token, String payloadName, Class<T> targetClass) throws BizException{
+    public static <T> T analysis(String token, String payloadName, Class<T> targetClass) throws BizException {
         try {
             // 获取 JWT
-            JWT jwt = JWT.of(token);
-        
+            JWT jwt = JWT.of (token);
+            
             return Convert.convert (targetClass, jwt.getPayload ().getClaim (payloadName));
         } catch (Exception e) {
             throw new BizException (BizCodeEnum.TOKEN_ERR);
@@ -83,23 +83,23 @@ public class JwtUtils {
      *
      * @return true : 校验通过 | false : 校验失败
      */
-    public static Boolean validateToken (String token, String secret) {
+    public static Boolean validateToken(String token, String secret) {
         return JWTUtil.verify (token, StrUtil.bytes (secret));
     }
     
     /**
      * 校验 JwtToken 时间, 共校验三种时间
      * <p>
-     *     <li>签发时间</li>
-     *     <li>生效时间</li>
-     *     <li>过期时间</li>
+     * <li>签发时间</li>
+     * <li>生效时间</li>
+     * <li>过期时间</li>
      * </p>
      *
      * @return true : 校验通过 | false : 校验失败
      */
-    public static Boolean validateDate (String token) {
+    public static Boolean validateDate(String token) {
         try {
-            JWTValidator.of(token).validateDate(DateUtil.date());
+            JWTValidator.of (token).validateDate (DateUtil.date ());
         } catch (ValidateException e) {
             return Boolean.FALSE;
         }

@@ -34,13 +34,13 @@ public class InitResourceMap {
     private AuthProp prop;
     
     @PostConstruct
-    public void initResourceMap () {
+    public void initResourceMap() {
         // 清空
         cacheService.clearResource ();
         
         // 获取 controller 包下面的所有类
         Set<Class<?>> classes = ClassUtil.scanPackage (prop.getControllerPackage ());
-    
+        
         // 初始化该类所有接口的权限数据
         for (Class<?> aClass : classes) {
             initClassResourceMap (aClass);
@@ -80,9 +80,9 @@ public class InitResourceMap {
     /**
      * 初始化指定接口的权限数据
      *
-     * @param classPath 接口所在类的请求路径
+     * @param classPath      接口所在类的请求路径
      * @param classRoleEnums 接口所在类的权限数据
-     * @param method 指定接口
+     * @param method         指定接口
      */
     private void initMethodResourceMap(String classPath, RoleEnums[] classRoleEnums, Method method) {
         // 获取该方法的 RoleAccess 注解
@@ -114,7 +114,7 @@ public class InitResourceMap {
      * @param method 方法
      * @return 请求路径
      */
-    private String getMethodPath (Method method) {
+    private String getMethodPath(Method method) {
         // 六种常用接口注释
         RequestMapping requestMapping = method.getAnnotation (RequestMapping.class);
         PostMapping postMapping = method.getAnnotation (PostMapping.class);

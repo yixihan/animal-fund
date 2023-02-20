@@ -88,7 +88,7 @@ public class ValidationUtils {
      *
      * @param idCard 身份证号
      */
-    public static Boolean validateIdCard (String idCard) {
+    public static Boolean validateIdCard(String idCard) {
         return StrUtil.isNotBlank (idCard) && idCard.matches (ID_CARD);
     }
     
@@ -106,11 +106,11 @@ public class ValidationUtils {
     /**
      * 校验密码, 除长度外, 其余规则, 四种有两个即可
      * <p>
-     *     <li>密码长度 : [8~20]</li>
-     *     <li>有大写字母</li>
-     *     <li>有小写字母</li>
-     *     <li>有数字</li>
-     *     <li>有特殊符号</li>
+     * <li>密码长度 : [8~20]</li>
+     * <li>有大写字母</li>
+     * <li>有小写字母</li>
+     * <li>有数字</li>
+     * <li>有特殊符号</li>
      * </p>
      *
      * @param password 密码

@@ -14,13 +14,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class CodeProp {
     
-    @Value ("${thirdpart.code.length}")
+    @Value("${thirdpart.code.length}")
     private Integer codeLen;
     
-    @Value ("${thirdpart.code.time-out}")
+    @Value("${thirdpart.code.time-out}")
     private Integer timeOut;
     
     // **** redis key **** //
-    @Value ("${thirdpart.code.common-key}")
+    @Value("${thirdpart.code.common-key}")
     private String commonKey;
 }

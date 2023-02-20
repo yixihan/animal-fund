@@ -31,13 +31,13 @@ public class PhotoCodeServiceImpl implements PhotoCodeService {
     
     @Override
     @SneakyThrows
-    public void createCode(HttpServletResponse response, String uuid) {
+    public void create(HttpServletResponse response, String uuid) {
         // 生成图片验证码
         CircleCaptcha captcha = CaptchaUtil.createCircleCaptcha (200, 100, 5, 20);
         
         // 获取验证码
         String code = captcha.getCode ();
-    
+        
         // 获取 redis key
         String keyName = String.format (codeProp.getCommonKey (), uuid);
         

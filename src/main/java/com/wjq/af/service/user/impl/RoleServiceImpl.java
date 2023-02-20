@@ -2,12 +2,12 @@ package com.wjq.af.service.user.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wjq.af.dto.response.user.RoleDtoResult;
-import com.wjq.af.pojo.user.Role;
 import com.wjq.af.mapper.user.RoleMapper;
+import com.wjq.af.pojo.user.Role;
 import com.wjq.af.pojo.user.UserRole;
 import com.wjq.af.service.user.RoleService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wjq.af.service.user.UserRoleService;
 import org.springframework.stereotype.Service;
 
@@ -37,14 +37,15 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
                 .eq (UserRole::getUserId, userId)
                 .list ()
                 .stream ()
-                .map (UserRole::getRoleId).collect(Collectors.toList());
+                .map (UserRole::getRoleId)
+                .collect (Collectors.toList ());
         
         if (CollectionUtil.isEmpty (roleIdList)) {
             return new ArrayList<> ();
         }
         
         List<Role> roleList = this.lambdaQuery ()
-                .in (Role::getId,  roleIdList)
+                .in (Role::getId, roleIdList)
                 .list ();
         
         return BeanUtil.copyToList (roleList, RoleDtoResult.class);

@@ -20,7 +20,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @ApiModel("志愿者注册-dtoReq")
-public class RegisterVolunteerDtoReq extends RegisterUserDtoReq{
+public class RegisterVolunteerDtoReq extends RegisterUserDtoReq {
     
     @ApiModelProperty(value = "用户身份证明")
     @NotBlank(message = "用户身份证明不能为空")

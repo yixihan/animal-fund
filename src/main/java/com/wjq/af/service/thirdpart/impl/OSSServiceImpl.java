@@ -25,13 +25,13 @@ import java.util.Map;
 @Slf4j
 @Service
 public class OSSServiceImpl implements OSSService {
-
+    
     @Resource
     private OSS ossClient;
-
+    
     @Resource
     private OssProp ossProp;
-
+    
     @Override
     public Map<String, String> policy(OSSPolicyDtoReq dtoReq) {
         // host 的格式为 bucketName.endpoint
@@ -47,12 +47,12 @@ public class OSSServiceImpl implements OSSService {
             PolicyConditions policyConds = new PolicyConditions ();
             policyConds.addConditionItem (PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, 1048576000);
             policyConds.addConditionItem (MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
-
+            
             String postPolicy = ossClient.generatePostPolicy (expiration, policyConds);
             byte[] binaryData = postPolicy.getBytes (StandardCharsets.UTF_8);
             String encodedPolicy = BinaryUtil.toBase64String (binaryData);
             String postSignature = ossClient.calculatePostSignature (postPolicy);
-
+            
             respMap = new LinkedHashMap<> ();
             respMap.put ("accessid", ossProp.getAccessKey ());
             respMap.put ("policy", encodedPolicy);
@@ -60,7 +60,7 @@ public class OSSServiceImpl implements OSSService {
             respMap.put ("dir", dir);
             respMap.put ("host", host);
             respMap.put ("expire", String.valueOf (expireEndTime / 1000));
-
+            
         } catch (Exception e) {
             log.error (e.getMessage ());
         }

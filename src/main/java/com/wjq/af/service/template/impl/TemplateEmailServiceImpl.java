@@ -2,11 +2,11 @@ package com.wjq.af.service.template.impl;
 
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
-import com.wjq.af.constant.RedisKeyConstant;
-import com.wjq.af.pojo.template.TemplateEmail;
-import com.wjq.af.mapper.template.TemplateEmailMapper;
-import com.wjq.af.service.template.TemplateEmailService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wjq.af.constant.RedisKeyConstant;
+import com.wjq.af.mapper.template.TemplateEmailMapper;
+import com.wjq.af.pojo.template.TemplateEmail;
+import com.wjq.af.service.template.TemplateEmailService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -49,7 +49,8 @@ public class TemplateEmailServiceImpl extends ServiceImpl<TemplateEmailMapper, T
     public String getEmailContent(Long id) {
         String template;
         try {
-            String jsonStr = JSONUtil.toJsonStr (redisTemplate.opsForValue ().get (RedisKeyConstant.EMAIL_TEMPLATE_KEY));
+            String jsonStr = JSONUtil.toJsonStr (redisTemplate.opsForValue ()
+                    .get (RedisKeyConstant.EMAIL_TEMPLATE_KEY));
             template = JSONUtil.parseArray (jsonStr)
                     .toList (TemplateEmail.class)
                     .stream ()
@@ -61,5 +62,5 @@ public class TemplateEmailServiceImpl extends ServiceImpl<TemplateEmailMapper, T
         }
         return template;
     }
-
+    
 }

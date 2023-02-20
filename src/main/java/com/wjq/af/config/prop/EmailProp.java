@@ -17,27 +17,13 @@ public class EmailProp {
     @Value("${thirdpart.email.send-email}")
     private String sendEmail;
     
-    @Value ("${thirdpart.email.title}")
+    @Value("${thirdpart.email.title}")
     private String title;
     
-    // **** redis key **** //
-    
-    @Value ("${thirdpart.email.login-key}")
-    private String loginKey;
-    
-    @Value ("${thirdpart.email.register-key}")
-    private String registerKey;
-    
-    @Value ("${thirdpart.email.update-password-key}")
+    @Value("${thirdpart.email.update-password-key}")
     private String updatePasswordKey;
     
-    @Value ("${thirdpart.email.common-key}")
+    @Value("${thirdpart.email.common-key}")
     private String commonKey;
-    
-    @Value ("${thirdpart.email.examine-key}")
-    private String examineKey;
-    
-    @Value ("${thirdpart.email.report-key}")
-    private String reportKey;
     
 }

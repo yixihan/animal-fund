@@ -27,15 +27,14 @@ public class EmailController {
     private EmailService service;
     
     @ApiOperation("发送邮件")
-    @PostMapping("/send/email")
-    void emailSend (@RequestBody EmailSendDtoReq req) {
-        service.emailSend (req);
+    @PostMapping(value = "/send/email", produces = "application/json")
+    void send(@RequestBody EmailSendDtoReq req) {
+        service.send (req);
     }
     
-    @ApiOperation ("校验邮件验证码")
-    @PostMapping("/validate/email")
-    void emailValidate (@RequestBody EmailValidateDtoReq req) {
-        service.emailValidate (req);
-    
+    @ApiOperation("校验邮件验证码")
+    @PostMapping(value = "/validate/email", produces = "application/json")
+    void validate(@RequestBody EmailValidateDtoReq req) {
+        service.validate (req);
     }
 }

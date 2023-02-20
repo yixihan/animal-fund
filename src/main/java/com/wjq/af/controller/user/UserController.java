@@ -35,29 +35,29 @@ public class UserController {
     @Resource
     private UserService service;
     
-    @ApiOperation ("获取登录用户信息")
+    @ApiOperation("获取登录用户信息")
     @GetMapping(value = "/info/cache", produces = "application/json")
-    public JsonResponse<UserDtoResult> getCacheUserInfo () {
+    public JsonResponse<UserDtoResult> getCacheUserInfo() {
         return JsonResponse.ok (service.getCacheUserInfo ());
     }
     
-    @ApiOperation ("获取用户信息")
+    @ApiOperation("获取用户信息")
     @GetMapping(value = "/info", produces = "application/json")
-    public JsonResponse<UserDtoResult> getCacheUserInfo (@RequestParam ("userId") Long userId) {
+    public JsonResponse<UserDtoResult> getCacheUserInfo(@RequestParam("userId") Long userId) {
         return JsonResponse.ok (service.getUserInfo (userId));
     }
     
-    @ApiOperation ("注册用户")
+    @ApiOperation("注册用户")
     @PostMapping(value = "/register/user", produces = "application/json")
-    public JsonResponse<Boolean> registerUser (@RequestBody @Valid RegisterUserDtoReq req) {
+    public JsonResponse<Boolean> registerUser(@RequestBody @Valid RegisterUserDtoReq req) {
         // 参数校验
         validateRegisterUser (req);
         return JsonResponse.ok (service.registerUser (req));
     }
     
-    @ApiOperation ("注册志愿者")
+    @ApiOperation("注册志愿者")
     @PostMapping(value = "/register/volunteer", produces = "application/json")
-    public JsonResponse<Boolean> registerVolunteer (@RequestBody @Valid RegisterVolunteerDtoReq req) {
+    public JsonResponse<Boolean> registerVolunteer(@RequestBody @Valid RegisterVolunteerDtoReq req) {
         // 参数校验
         validateRegisterUser (req);
         return JsonResponse.ok (service.registerVolunteer (req));
@@ -68,13 +68,12 @@ public class UserController {
      *
      * @param req 请求参数
      */
-    private void validateRegisterUser (RegisterUserDtoReq req) {
+    private void validateRegisterUser(RegisterUserDtoReq req) {
         Assert.isTrue (ValidationUtils.validateMobile (req.getUserMobile ()));
         Assert.isTrue (ValidationUtils.validateEmail (req.getUserEmail ()));
         Assert.isTrue (ValidationUtils.validatePassword (req.getUserPassword ()));
         Assert.isTrue (ValidationUtils.validateUserName (req.getUserFullName ()));
         Assert.isTrue (ValidationUtils.validateUserName (req.getUserNickName ()));
         Assert.isTrue (ValidationUtils.validateIdCard (req.getUserIdCard ()));
-        
     }
 }

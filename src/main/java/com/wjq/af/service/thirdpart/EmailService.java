@@ -16,12 +16,12 @@ public interface EmailService {
      *
      * @param dtoReq 请求参数
      */
-    void emailSend(EmailSendDtoReq dtoReq);
+    void send(EmailSendDtoReq dtoReq);
     
     /**
      * 邮件验证码验证
      *
      * @param dtoReq 请求参数
      */
-    void emailValidate(EmailValidateDtoReq dtoReq);
+    void validate(EmailValidateDtoReq dtoReq);
 }

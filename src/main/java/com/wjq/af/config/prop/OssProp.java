@@ -23,9 +23,9 @@ public class OssProp {
     @Value("${thirdpart.oss.endpoint}")
     private String endpoint;
     
-    @Value ("${thirdpart.oss.bucket-name}")
+    @Value("${thirdpart.oss.bucket-name}")
     private String bucketName;
     
-    @Value ("${thirdpart.oss.host}")
+    @Value("${thirdpart.oss.host}")
     private String host;
 }

@@ -1,7 +1,7 @@
 package com.wjq.af.service.template;
 
-import com.wjq.af.pojo.template.TemplateEmail;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wjq.af.pojo.template.TemplateEmail;
 
 import javax.annotation.PostConstruct;
 
@@ -19,5 +19,5 @@ public interface TemplateEmailService extends IService<TemplateEmail> {
     void initMessageTemplate();
     
     String getEmailContent(Long id);
-
+    
 }

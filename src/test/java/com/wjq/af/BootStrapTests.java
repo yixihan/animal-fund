@@ -7,10 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class BootStrapTests {
     
-    @Value ("${animal.name}")
+    @Value("${animal.name}")
     private String name;
     
-    @Value ("${animal.redis.db}")
+    @Value("${animal.redis.db}")
     private Integer redisDb;
     
     @Test

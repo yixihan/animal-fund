@@ -38,9 +38,9 @@ public class AuthController {
     @Resource
     private UserService userService;
     
-    @ApiOperation ("用户登录")
+    @ApiOperation("用户登录")
     @PostMapping(value = "/login", produces = "application/json")
-    public JsonResponse<AuthDtoResult> login (@RequestBody @Valid AuthDtoReq req) {
+    public JsonResponse<AuthDtoResult> login(@RequestBody @Valid AuthDtoReq req) {
         // 参数校验
         Assert.isTrue (ValidationUtils.validateMobile (req.getMobile ()));
         Assert.isTrue (ValidationUtils.validatePassword (req.getPassword ()));
@@ -48,9 +48,9 @@ public class AuthController {
         return JsonResponse.ok (authService.login (req));
     }
     
-    @ApiOperation ("重置密码")
+    @ApiOperation("重置密码")
     @PostMapping(value = "/reset/password", produces = "application/json")
-    public JsonResponse<Boolean> resetPassword (@RequestBody @Valid ResetPasswordDtoReq req) {
+    public JsonResponse<Boolean> resetPassword(@RequestBody @Valid ResetPasswordDtoReq req) {
         // 参数校验
         Assert.isTrue (ValidationUtils.validateEmail (req.getEmail ()));
         Assert.isTrue (ValidationUtils.validatePassword (req.getPassword ()));

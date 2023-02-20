@@ -16,15 +16,15 @@ import java.util.stream.Collectors;
  * @author yixihan
  * @date 2023/2/15 15:14
  */
-@SuppressWarnings ("all")
+@SuppressWarnings("all")
 public class PageUtils {
     
     /**
      * {@code Page<K> -> Page<V>}
      *
-     * @param K 原始实体类
-     * @param V 目标实体类
-     * @param page 要转换的{@link Page}分页对象
+     * @param K      原始实体类
+     * @param V      目标实体类
+     * @param page   要转换的{@link Page}分页对象
      * @param mapper 实体类转换方法
      * @return {@link Page}
      */
@@ -38,9 +38,9 @@ public class PageUtils {
     /**
      * {@code IPage<K> -> Page<V>}
      *
-     * @param K 原始实体类
-     * @param V 目标实体类
-     * @param page 要转换的{@link IPage}分页对象
+     * @param K      原始实体类
+     * @param V      目标实体类
+     * @param page   要转换的{@link IPage}分页对象
      * @param mapper 实体类转换方法
      * @return {@link Page}
      */
@@ -54,7 +54,7 @@ public class PageUtils {
     /**
      * {@code IPage<T> -> PageDtoResult<T>}
      *
-     * @param T 实体类
+     * @param T    实体类
      * @param page 要转换的{@link IPage}分页对象
      * @return {@link PageDtoResult}
      */
@@ -66,9 +66,9 @@ public class PageUtils {
     /**
      * {@code IPage<T> -> PageDtoResult<R>}
      *
-     * @param T 原始实体类
-     * @param R 目标实体类
-     * @param page 要转换的{@link IPage}分页对象
+     * @param T       原始实体类
+     * @param R       目标实体类
+     * @param page    要转换的{@link IPage}分页对象
      * @param convert 实体类转换方法
      * @return {@link PageDtoResult}
      */

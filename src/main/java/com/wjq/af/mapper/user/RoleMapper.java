@@ -1,8 +1,7 @@
 package com.wjq.af.mapper.user;
 
-import com.wjq.af.pojo.user.Role;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
+import com.wjq.af.pojo.user.Role;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

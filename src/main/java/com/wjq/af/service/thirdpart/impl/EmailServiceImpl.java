@@ -45,24 +45,24 @@ public class EmailServiceImpl implements EmailService {
     private EmailProp emailProp;
     
     @Override
-    public void emailSend(EmailSendDtoReq dtoReq) {
+    public void send(EmailSendDtoReq dtoReq) {
         EmailTemplateEnums emailType = EmailTemplateEnums.valueOf (dtoReq.getType ());
         String keyName = getRedisKey (dtoReq.getEmail (), emailType);
         String emailContent = templateEmailService.getEmailContent (emailType.getId ());
         try {
-            String code = codeService.getCode(keyName);
+            String code = codeService.getCode (keyName);
             // 创建一个复杂的文件
-            MimeMessage mailMessage = mailSender.createMimeMessage();
+            MimeMessage mailMessage = mailSender.createMimeMessage ();
             // 组装邮件
-            MimeMessageHelper helper = new MimeMessageHelper (mailMessage,true,"utf-8");
-            helper.setSubject(emailProp.getTitle ());
-            helper.setText(String.format (emailContent, code, codeProp.getTimeOut ()),true);
+            MimeMessageHelper helper = new MimeMessageHelper (mailMessage, true, "utf-8");
+            helper.setSubject (emailProp.getTitle ());
+            helper.setText (String.format (emailContent, code, codeProp.getTimeOut ()), true);
             // 收件人
-            helper.setTo(dtoReq.getEmail ());
+            helper.setTo (dtoReq.getEmail ());
             // 发件人
-            helper.setFrom(emailProp.getSendEmail ());
+            helper.setFrom (emailProp.getSendEmail ());
             // 发送
-            mailSender.send(mailMessage);
+            mailSender.send (mailMessage);
         } catch (MessagingException e) {
             log.error ("邮件发送失败 : {}", e.getMessage ());
             throw new BizException (BizCodeEnum.EMAIL_SEND_ERR);
@@ -70,7 +70,7 @@ public class EmailServiceImpl implements EmailService {
     }
     
     @Override
-    public void emailValidate(EmailValidateDtoReq dtoReq) {
+    public void validate(EmailValidateDtoReq dtoReq) {
         // 生成 keyName
         EmailTemplateEnums emailType = EmailTemplateEnums.valueOf (dtoReq.getEmailType ());
         String keyName = getRedisKey (dtoReq.getEmail (), emailType);
@@ -80,19 +80,13 @@ public class EmailServiceImpl implements EmailService {
     /**
      * 获取 redis key
      *
-     * @param email email
+     * @param email     email
      * @param emailType 邮箱类型 {@link EmailTemplateEnums}
      * @return redis key
      */
-    private String getRedisKey (String email, EmailTemplateEnums emailType) {
+    private String getRedisKey(String email, EmailTemplateEnums emailType) {
         String key;
         switch (emailType) {
-            case EXAMINE:
-                key = String.format (emailProp.getExamineKey (), email);
-                break;
-            case REPORT:
-                key = String.format (emailProp.getReportKey (), email);
-                break;
             case RESET_PASSWORD:
                 key = String.format (emailProp.getUpdatePasswordKey (), email);
                 break;

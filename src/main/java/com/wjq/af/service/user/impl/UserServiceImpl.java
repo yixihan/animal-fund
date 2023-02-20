@@ -52,7 +52,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .eq (User::getId, userId)
                 .one ();
         Assert.notNull (user, BizCodeEnum.ACCOUNT_NOT_FOUND);
-    
+        
         return BeanUtil.toBean (user, UserDtoResult.class);
     }
     
@@ -76,7 +76,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         saveUser (user);
         // 保存角色表
         saveUserRole (user.getId (), RoleEnums.VOLUNTEER);
-    
+        
         return Boolean.TRUE;
     }
     
@@ -104,14 +104,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 新增用户角色
      *
-     * @param userId 用户 ID
+     * @param userId    用户 ID
      * @param roleEnums 角色 {@link RoleEnums}
      */
     private void saveUserRole(Long userId, RoleEnums roleEnums) {
         UserRole userRole = new UserRole ();
         userRole.setUserId (userId);
         userRole.setRoleId (roleEnums.getRoleId ());
-    
+        
         // 保存数据库
         Assert.isTrue (userRoleService.save (userRole), BizCodeEnum.FAILED_TYPE_BUSINESS);
     }

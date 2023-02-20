@@ -47,15 +47,15 @@ public class TokenService {
      *
      * @param token jwtToken
      * @return {@link AuthDtoResult}
-     * @throws  BizException 登录失败则抛出 (账户不存在, 密码错误, token 过期)
+     * @throws BizException 登录失败则抛出 (账户不存在, 密码错误, token 过期)
      */
-    public AuthDtoResult authentication (String token) throws BizException {
+    public AuthDtoResult authentication(String token) throws BizException {
         // 从 token 种获取 userId
         Long userId = JwtUtils.analysis (token, USER_ID, Long.class);
-    
+        
         // 从数据库种获取 user
         User user = userService.getById (userId);
-    
+        
         // 账户不存在
         Assert.notNull (user, BizCodeEnum.ACCOUNT_NOT_FOUND);
         
@@ -64,9 +64,7 @@ public class TokenService {
         
         // token 错误
         Assert.isTrue (JwtUtils.validateToken (token, user.getUserPassword ()),
-                cacheService.contains (token) ?
-                        BizCodeEnum.TOKEN_ERR :
-                        BizCodeEnum.PASSWORD_ERR );
+                BizCodeEnum.PASSWORD_ERR);
         
         AuthDtoResult authInfo = new AuthDtoResult (
                 BeanUtil.toBean (user, UserDtoResult.class),
@@ -83,11 +81,11 @@ public class TokenService {
     /**
      * 权限校验
      *
-     * @param token jwtToken
+     * @param token      jwtToken
      * @param requestUri 请求路径
      * @return true : 可以访问 | false : 不可访问
      */
-    public Boolean authorization (String token, String requestUri) throws BizException {
+    public Boolean authorization(String token, String requestUri) throws BizException {
         // 从 redis 中获取登录用户权限信息
         List<RoleDtoResult> roleList = cacheService.get (token).getRoleList ();
         // 从 redis 中获取资源路径权限信息
@@ -103,7 +101,7 @@ public class TokenService {
      *
      * @return {@link AuthDtoResult}
      */
-    public AuthDtoResult getCacheAuthInfo () throws BizException  {
+    public AuthDtoResult getCacheAuthInfo() throws BizException {
         String token = request.getHeader (AuthConstant.JWT_TOKEN);
         return cacheService.get (token);
     }
@@ -113,7 +111,7 @@ public class TokenService {
      *
      * @return {@link UserDtoResult}
      */
-    public UserDtoResult getCacheUser () throws BizException  {
+    public UserDtoResult getCacheUser() throws BizException {
         return getCacheAuthInfo ().getUser ();
     }
     
@@ -122,7 +120,7 @@ public class TokenService {
      *
      * @return UserId
      */
-    public Long getCacheUserId () throws BizException  {
+    public Long getCacheUserId() throws BizException {
         return getCacheUser ().getId ();
     }
     
@@ -131,7 +129,7 @@ public class TokenService {
      *
      * @return {@link RoleDtoResult}
      */
-    public List<RoleDtoResult> getCacheUserRoleList () throws BizException  {
+    public List<RoleDtoResult> getCacheUserRoleList() throws BizException {
         return getCacheAuthInfo ().getRoleList ();
     }
     
@@ -140,7 +138,7 @@ public class TokenService {
      *
      * @param token jwtToken
      */
-    public void logout (String token) throws BizException  {
+    public void logout(String token) throws BizException {
         cacheService.del (token);
     }
 }

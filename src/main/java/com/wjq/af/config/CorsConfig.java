@@ -31,7 +31,9 @@ public class CorsConfig extends WebMvcConfigurationSupport {
                 // 可以访问的具体地址
                 .allowedOrigins ("*")
                 // 是否允许请求带有验证信息
-                .allowCredentials (true).allowedMethods ("GET", "POST", "DELETE", "PUT")
+                .allowCredentials (true)
+                // 运行哪些请求方式
+                .allowedMethods ("*")
                 // 跨域允许时间
                 .maxAge (3600);
     }
@@ -41,8 +43,8 @@ public class CorsConfig extends WebMvcConfigurationSupport {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/swagger-ui/")
-                .setViewName("forward:/swagger-ui/index.html");
+        registry.addViewController ("/swagger-ui/")
+                .setViewName ("forward:/swagger-ui/index.html");
     }
     
     /**
@@ -51,16 +53,16 @@ public class CorsConfig extends WebMvcConfigurationSupport {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // swagger
-        registry.addResourceHandler("/swagger-ui/**")
-                .addResourceLocations("classpath:/META-INF/resources/**/**")
+        registry.addResourceHandler ("/swagger-ui/**")
+                .addResourceLocations ("classpath:/META-INF/resources/**/**")
                 .addResourceLocations ("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
-                .resourceChain(false);
+                .resourceChain (false);
         // webjars
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/**");
-        registry.addResourceHandler("/druid/**")
-                .addResourceLocations("classpath:/META-INF/resources/**");
-        super.addResourceHandlers(registry);
+        registry.addResourceHandler ("/webjars/**")
+                .addResourceLocations ("classpath:/META-INF/resources/webjars/**");
+        registry.addResourceHandler ("/druid/**")
+                .addResourceLocations ("classpath:/META-INF/resources/**");
+        super.addResourceHandlers (registry);
     }
     
     /**

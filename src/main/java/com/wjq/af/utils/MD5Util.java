@@ -36,7 +36,7 @@ public class MD5Util {
      * 获得加密后的16进制形式口令
      *
      * @param password 密码
-     * @param salt 盐
+     * @param salt     盐
      * @return 加密后的密码
      */
     @SneakyThrows
