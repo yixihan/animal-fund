@@ -67,11 +67,9 @@ public class RescueAnimalInfoServiceImpl extends ServiceImpl<RescueAnimalInfoMap
     @Override
     public PageDtoResult<RescueAnimalInfoDtoResult> query(QueryRescueAnimalInfoDtoReq req) {
         Page<RescueAnimalInfo> pages = this.lambdaQuery ()
-                .eq (StrUtil.isNotBlank (req.getAnimalType ()), RescueAnimalInfo::getAnimalType, req.getAnimalGender ())
-                .eq (StrUtil.isNotBlank (req.getAnimalGender ()), RescueAnimalInfo::getAnimalGender, req.getAnimalGender ())
-                .eq (StrUtil.isNotBlank (req.getAddress ()), RescueAnimalInfo::getAddress, req.getAddress ())
-                .eq (StrUtil.isNotBlank (req.getAddressDetail ()), RescueAnimalInfo::getAddressDetail, req.getAddressDetail ())
+                .eq (StrUtil.isNotBlank (req.getAnimalType ()), RescueAnimalInfo::getAnimalType, req.getAnimalType ())
                 .eq (StrUtil.isNotBlank (req.getInjuryDegree ()), RescueAnimalInfo::getInjuryDegree, req.getInjuryDegree ())
+                .eq (RescueAnimalInfo::getExamineStatus, ExamineStatusEnums.EXAMINE_SUCCESS.getValue ())
                 .orderByDesc (RescueAnimalInfo::getCreateTime)
                 .page (new Page<> (req.getPage (), req.getPageSize (), req.getSearchCount ()));
         

@@ -24,15 +24,7 @@ public class QueryRescueAnimalInfoDtoReq extends PageDtoReq {
     @ApiModelProperty(value = "动物种类[猫: CAT, 大型犬: BIT_DOG, 小型犬: SMALL_DOG, 兔子: RABBIT, 鸟类: BIRD, 其他: OTHER]")
     private String animalType;
     
-    @ApiModelProperty(value = "动物性别[雄性:MALE, 雌性:FEMALE]")
-    private String animalGender;
-    
     @ApiModelProperty(value = "受伤程度[饥饿: HUNGER, 外伤(较轻): TRAUMA_LIGHTER, 外伤(较重): TRAUMA_SERIOUS, 怀孕: PREGNANT, 绝育: STERILIZATION, 狂犬病: RABIES, 气管炎: TRACHEITIS, 口腔炎: STOMATITIS, 皮肤病: SKIN_DISEASE, 犬瘟: CANINE_DISTEMPER, 其他: OTHER]")
     private String injuryDegree;
     
-    @ApiModelProperty(value = "地点")
-    private String address;
-    
-    @ApiModelProperty(value = "具体地点")
-    private String addressDetail;
 }
