@@ -135,10 +135,9 @@ public class TokenService {
     
     /**
      * 登出
-     *
-     * @param token jwtToken
      */
-    public void logout(String token) throws BizException {
+    public void logout() throws BizException {
+        String token = request.getHeader (AuthConstant.JWT_TOKEN);
         cacheService.del (token);
     }
 }

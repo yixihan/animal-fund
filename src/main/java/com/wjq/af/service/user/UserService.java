@@ -1,7 +1,7 @@
 package com.wjq.af.service.user;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.wjq.af.dto.request.auth.ResetPasswordDtoReq;
+import com.wjq.af.dto.request.user.ModifyUserDtoReq;
 import com.wjq.af.dto.request.user.RegisterUserDtoReq;
 import com.wjq.af.dto.request.user.RegisterVolunteerDtoReq;
 import com.wjq.af.dto.response.user.UserDtoResult;
@@ -25,7 +25,7 @@ public interface UserService extends IService<User> {
     UserDtoResult getCacheUserInfo();
     
     /**
-     * 获取当前指定用户用户信息
+     * 获取指定用户用户信息
      *
      * @param userId 用户 ID
      * @return {@link UserDtoResult}
@@ -36,23 +36,26 @@ public interface UserService extends IService<User> {
      * 注册用户
      *
      * @param req 请求参数
-     * @return true : 注册成功 | false : 注册失败
      */
-    Boolean registerUser(RegisterUserDtoReq req);
+    void registerUser(RegisterUserDtoReq req);
     
     /**
      * 注册志愿者
      *
      * @param req 请求参数
-     * @return true : 注册成功 | false : 注册失败
      */
-    Boolean registerVolunteer(RegisterVolunteerDtoReq req);
+    void registerVolunteer(RegisterVolunteerDtoReq req);
     
     /**
-     * 重置密码
+     * 用户信息修改
      *
      * @param req 请求参数
-     * @return true : 重置成功 | false : 重置失败
      */
-    Boolean resetPassword(ResetPasswordDtoReq req);
+    void modifyUserInfo(ModifyUserDtoReq req);
+    
+    /**
+     * 用户登出
+     *
+     */
+    void logout();
 }

@@ -5,7 +5,7 @@ import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wjq.af.auth.enums.RoleEnums;
 import com.wjq.af.auth.service.TokenService;
-import com.wjq.af.dto.request.auth.ResetPasswordDtoReq;
+import com.wjq.af.dto.request.user.ModifyUserDtoReq;
 import com.wjq.af.dto.request.user.RegisterUserDtoReq;
 import com.wjq.af.dto.request.user.RegisterVolunteerDtoReq;
 import com.wjq.af.dto.response.user.UserDtoResult;
@@ -58,47 +58,41 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     
     @Override
     @Transactional(rollbackFor = BizException.class)
-    public Boolean registerUser(RegisterUserDtoReq req) {
+    public void registerUser(RegisterUserDtoReq req) {
         User user = BeanUtil.toBean (req, User.class);
         // 保存用户表
         saveUser (user);
         // 保存角色表
         saveUserRole (user.getId (), RoleEnums.USER);
-        return Boolean.TRUE;
     }
     
     @Override
     @Transactional(rollbackFor = BizException.class)
-    public Boolean registerVolunteer(RegisterVolunteerDtoReq req) {
+    public void registerVolunteer(RegisterVolunteerDtoReq req) {
         User user = BeanUtil.toBean (req, User.class);
         user.setExamineStatus (ExamineStatusEnums.UN_EXAMINE.getValue ());
         // 保存用户表
         saveUser (user);
         // 保存角色表
         saveUserRole (user.getId (), RoleEnums.VOLUNTEER);
-        
-        return Boolean.TRUE;
     }
     
     @Override
-    public Boolean resetPassword(ResetPasswordDtoReq req) {
-        // TODO 验证码校验
-        
-        User user = this.lambdaQuery ()
-                .eq (User::getUserEmail, req.getEmail ())
-                .one ();
-        
-        Assert.notNull (user, BizCodeEnum.ACCOUNT_NOT_FOUND);
-        
-        // 密码加密
-        String salt = RandomUtil.randomString (10);
-        String password = MD5Util.md5 (req.getPassword (), salt);
-        user.setUserPassword (password);
-        user.setUserSalt (salt);
-        
+    public void modifyUserInfo(ModifyUserDtoReq req) {
+        // 获取登录用户用户 ID
+        Long userId = tokenService.getCacheUserId ();
+        // 获取乐观锁
+        Integer version = this.getById (userId).getVersion ();
+        User user = BeanUtil.toBean (req, User.class);
+        user.setId (userId);
+        user.setVersion (version);
+    
         Assert.isTrue (this.updateById (user), BizCodeEnum.FAILED_TYPE_BUSINESS);
-        
-        return Boolean.TRUE;
+    }
+    
+    @Override
+    public void logout() {
+        tokenService.logout ();
     }
     
     /**

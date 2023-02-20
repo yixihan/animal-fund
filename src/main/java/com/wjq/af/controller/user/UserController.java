@@ -2,6 +2,7 @@ package com.wjq.af.controller.user;
 
 
 import com.wjq.af.auth.annotation.RoleAccess;
+import com.wjq.af.dto.request.user.ModifyUserDtoReq;
 import com.wjq.af.dto.request.user.RegisterUserDtoReq;
 import com.wjq.af.dto.request.user.RegisterVolunteerDtoReq;
 import com.wjq.af.dto.response.JsonResponse;
@@ -51,18 +52,30 @@ public class UserController {
     
     @ApiOperation("注册用户")
     @PostMapping(value = "/register/user", produces = "application/json")
-    public JsonResponse<Boolean> registerUser(@RequestBody @Valid RegisterUserDtoReq req) {
+    public void registerUser(@RequestBody @Valid RegisterUserDtoReq req) {
         // 参数校验
         validateRegisterUser (req);
-        return JsonResponse.ok (service.registerUser (req));
+        service.registerUser (req);
     }
     
     @ApiOperation("注册志愿者")
     @PostMapping(value = "/register/volunteer", produces = "application/json")
-    public JsonResponse<Boolean> registerVolunteer(@RequestBody @Valid RegisterVolunteerDtoReq req) {
+    public void registerVolunteer(@RequestBody @Valid RegisterVolunteerDtoReq req) {
         // 参数校验
         validateRegisterUser (req);
-        return JsonResponse.ok (service.registerVolunteer (req));
+        service.registerVolunteer (req);
+    }
+    
+    @ApiOperation ("修改用户信息")
+    @PostMapping(value = "/modify/info", produces = "application/json")
+    public void modifyUserInfo (@RequestBody ModifyUserDtoReq req) {
+        service.modifyUserInfo (req);
+    }
+    
+    @ApiOperation ("登出账户")
+    @PutMapping(value = "/logout", produces = "application/json")
+    public void logout () {
+        service.logout ();
     }
     
     /**
