@@ -5,6 +5,7 @@ import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wjq.af.auth.enums.RoleEnums;
 import com.wjq.af.auth.service.TokenService;
+import com.wjq.af.dto.request.thirdpart.RealNameAuthDtoReq;
 import com.wjq.af.dto.request.user.ModifyUserDtoReq;
 import com.wjq.af.dto.request.user.RegisterUserDtoReq;
 import com.wjq.af.dto.request.user.RegisterVolunteerDtoReq;
@@ -15,6 +16,7 @@ import com.wjq.af.exception.BizException;
 import com.wjq.af.mapper.user.UserMapper;
 import com.wjq.af.pojo.user.User;
 import com.wjq.af.pojo.user.UserRole;
+import com.wjq.af.service.thirdpart.RealNameAuthService;
 import com.wjq.af.service.user.UserRoleService;
 import com.wjq.af.service.user.UserService;
 import com.wjq.af.utils.Assert;
@@ -41,6 +43,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Resource
     private UserRoleService userRoleService;
     
+    @Resource
+    private RealNameAuthService realNameAuthService;
+    
     @Override
     public UserDtoResult getCacheUserInfo() {
         return tokenService.getCacheUser ();
@@ -59,6 +64,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional(rollbackFor = BizException.class)
     public void registerUser(RegisterUserDtoReq req) {
+        // 实名认证
+        realNameAuth (req);
+    
         User user = BeanUtil.toBean (req, User.class);
         // 保存用户表
         saveUser (user);
@@ -69,8 +77,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional(rollbackFor = BizException.class)
     public void registerVolunteer(RegisterVolunteerDtoReq req) {
+        // 实名认证
+        realNameAuth (req);
+        
         User user = BeanUtil.toBean (req, User.class);
         user.setExamineStatus (ExamineStatusEnums.UN_EXAMINE.getValue ());
+        
         // 保存用户表
         saveUser (user);
         // 保存角色表
@@ -124,5 +136,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         
         // 保存数据库
         Assert.isTrue (this.save (user), BizCodeEnum.FAILED_TYPE_BUSINESS);
+    }
+    
+    /**
+     * 实名认证
+     *
+     * @param req 注册请求参数
+     */
+    private void realNameAuth(RegisterUserDtoReq req) {
+        RealNameAuthDtoReq authReq = new RealNameAuthDtoReq ();
+        authReq.setIdCard (req.getUserIdCard ());
+        authReq.setRealName (req.getUserFullName ());
+        realNameAuthService.auth (authReq);
     }
 }
