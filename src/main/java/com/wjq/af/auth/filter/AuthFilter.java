@@ -8,6 +8,7 @@ import com.wjq.af.auth.service.TokenService;
 import com.wjq.af.dto.response.JsonResponse;
 import com.wjq.af.exception.BizCodeEnum;
 import com.wjq.af.exception.BizException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -24,6 +25,7 @@ import java.io.IOException;
  * @author yixihan
  * @date 2023/2/16 14:06
  */
+@Slf4j
 @Component
 public class AuthFilter implements Filter {
     
@@ -91,6 +93,7 @@ public class AuthFilter implements Filter {
             //执行
             filterChain.doFilter (servletRequest, servletResponse);
         } catch (IOException | ServletException | BizException e) {
+            log.info ("认证出错 : {}", e.getMessage ());
             out (response, BizCodeEnum.TOKEN_ERR);
         }
     }

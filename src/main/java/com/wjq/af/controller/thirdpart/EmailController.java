@@ -32,13 +32,13 @@ public class EmailController {
     
     @ApiOperation("发送邮件")
     @PostMapping(value = "/send/email", produces = "application/json")
-    void send(@RequestBody EmailSendDtoReq req) {
+    public void send(@RequestBody EmailSendDtoReq req) {
         service.send (req);
     }
     
     @ApiOperation("校验邮件验证码")
     @PostMapping(value = "/validate/email", produces = "application/json")
-    void validate(@RequestBody EmailValidateDtoReq req) {
+    public void validate(@RequestBody EmailValidateDtoReq req) {
         service.validate (req);
     }
 }

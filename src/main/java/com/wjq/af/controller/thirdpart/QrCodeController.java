@@ -31,7 +31,7 @@ public class QrCodeController {
     
     @ApiOperation("生成二维码")
     @GetMapping(value = "/create", produces = "application/json")
-    void create(HttpServletResponse response, @RequestParam("param") String param) {
+    public void create(HttpServletResponse response, @RequestParam("param") String param) {
         service.create (response, param);
     }
 }

@@ -42,9 +42,11 @@ public class InitResourceMap {
         Set<Class<?>> classes = ClassUtil.scanPackage (prop.getControllerPackage ());
         
         // 初始化该类所有接口的权限数据
+        log.info ("开始初始化各接口权限数据...");
         for (Class<?> aClass : classes) {
             initClassResourceMap (aClass);
         }
+        log.info ("接口权限数据初始化完毕~");
     }
     
     /**
@@ -105,6 +107,7 @@ public class InitResourceMap {
         }
         
         List<RoleEnums> roleList = CollUtil.toList (methodRoleEnums);
+        log.info ("资源路径 : {}, 权限为 : {}", methodPath, roleList);
         cacheService.putResource (methodPath, roleList);
     }
     

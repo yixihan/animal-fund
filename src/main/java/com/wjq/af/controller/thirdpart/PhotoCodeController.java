@@ -31,13 +31,13 @@ public class PhotoCodeController {
     
     @ApiOperation("生成图形验证码")
     @GetMapping(value = "/create", produces = "application/json")
-    void create(HttpServletResponse response, @RequestParam("uuid") @NotBlank String uuid) {
+    public void create(HttpServletResponse response, @RequestParam("uuid") @NotBlank String uuid) {
         service.create (response, uuid);
     }
     
     @ApiOperation("校验验证码")
     @PostMapping("/validate")
-    void validateCode(@RequestBody @Valid CodeValidateDtoReq req) {
+    public void validateCode(@RequestBody @Valid CodeValidateDtoReq req) {
         service.validateCode (req);
     }
 }
