@@ -52,6 +52,7 @@ public class RescueAnimalCapitalDetailServiceImpl extends ServiceImpl<RescueAnim
                 new BizException ("您不是该动物救援志愿者"));
     
         RescueAnimalCapitalDetail rescueAnimalCapitalDetail = BeanUtil.toBean (req, RescueAnimalCapitalDetail.class);
+        rescueAnimalCapitalDetail.setExamineStatus (ExamineStatusEnums.UN_EXAMINE.name ());
         Assert.isTrue (save (rescueAnimalCapitalDetail), BizCodeEnum.FAILED_TYPE_BUSINESS);
     }
     

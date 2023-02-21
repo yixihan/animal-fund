@@ -59,6 +59,7 @@ public class RescueAnimalStatusServiceImpl extends ServiceImpl<RescueAnimalStatu
         // 校验该动物救援状态, 是否已被其他用户申请
         Assert.isNull (rescueAnimalStatus.getUserId (), new BizException ("该动物已被其他用户申请救援"));
         rescueAnimalStatus.setUserId (tokenService.getCacheUserId ());
+        rescueAnimalStatus.setExamineStatus (ExamineStatusEnums.UN_EXAMINE.name ());
         
         Assert.isTrue (updateById (rescueAnimalStatus), BizCodeEnum.FAILED_TYPE_BUSINESS);
     }
