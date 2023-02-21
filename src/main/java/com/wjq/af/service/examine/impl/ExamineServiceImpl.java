@@ -2,30 +2,39 @@ package com.wjq.af.service.examine.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.wjq.af.auth.service.TokenService;
+import com.wjq.af.auth.enums.RoleEnums;
 import com.wjq.af.dto.request.PageDtoReq;
 import com.wjq.af.dto.request.examine.ExamineDtoReq;
+import com.wjq.af.dto.request.thirdpart.ExamineEmailDtoReq;
 import com.wjq.af.dto.response.PageDtoResult;
 import com.wjq.af.dto.response.comment.CommentReportDtoResult;
 import com.wjq.af.dto.response.rescue.RescueAnimalCapitalDetailDtoResult;
 import com.wjq.af.dto.response.rescue.RescueAnimalInfoDtoResult;
 import com.wjq.af.dto.response.rescue.RescueAnimalStatusDtoResult;
 import com.wjq.af.dto.response.user.UserDtoResult;
+import com.wjq.af.enums.EmailTemplateEnums;
 import com.wjq.af.enums.ExamineStatusEnums;
+import com.wjq.af.exception.BizCodeEnum;
+import com.wjq.af.exception.BizException;
 import com.wjq.af.pojo.comment.CommentReport;
 import com.wjq.af.pojo.rescue.RescueAnimalCapitalDetail;
 import com.wjq.af.pojo.rescue.RescueAnimalInfo;
 import com.wjq.af.pojo.rescue.RescueAnimalStatus;
 import com.wjq.af.pojo.user.User;
+import com.wjq.af.pojo.user.UserRole;
 import com.wjq.af.service.comment.CommentReportService;
 import com.wjq.af.service.examine.ExamineService;
 import com.wjq.af.service.rescue.RescueAnimalCapitalDetailService;
 import com.wjq.af.service.rescue.RescueAnimalInfoService;
 import com.wjq.af.service.rescue.RescueAnimalStatusService;
+import com.wjq.af.service.thirdpart.EmailService;
+import com.wjq.af.service.user.UserRoleService;
 import com.wjq.af.service.user.UserService;
+import com.wjq.af.utils.Assert;
 import com.wjq.af.utils.PageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -40,10 +49,10 @@ import javax.annotation.Resource;
 public class ExamineServiceImpl implements ExamineService {
     
     @Resource
-    private TokenService tokenService;
+    private UserService userService;
     
     @Resource
-    private UserService userService;
+    private UserRoleService userRoleService;
     
     @Resource
     private RescueAnimalInfoService rescueAnimalInfoService;
@@ -56,6 +65,9 @@ public class ExamineServiceImpl implements ExamineService {
     
     @Resource
     private CommentReportService commentReportService;
+    
+    @Resource
+    private EmailService emailService;
     
     @Override
     public PageDtoResult<UserDtoResult> unExamineVolunteer(PageDtoReq req) {
@@ -71,8 +83,45 @@ public class ExamineServiceImpl implements ExamineService {
     }
     
     @Override
+    @Transactional(rollbackFor = BizException.class)
     public void examineVolunteer(ExamineDtoReq req) {
+        User user = userService.getById (req.getId ());
     
+        Assert.notNull (user, new BizException ("没有该志愿者信息"));
+        Assert.isFalse (ExamineStatusEnums.EXAMINE_SUCCESS.getValue ().equals (user.getExamineStatus ()),
+                new BizException ("该志愿者已审核通过"));
+        
+        if (req.getExamineStatus ()) {
+            // 审核通过
+            // 修改用户表
+            user.setExamineStatus (ExamineStatusEnums.EXAMINE_SUCCESS.name ());
+            Assert.isTrue (userService.updateById (user), BizCodeEnum.FAILED_TYPE_BUSINESS);
+            
+            // 赋予志愿者志愿者权限
+            UserRole userRole = new UserRole ();
+            userRole.setUserId (req.getId ());
+            userRole.setRoleId (RoleEnums.VOLUNTEER.getRoleId ());
+            Assert.isTrue (userRoleService.save (userRole), BizCodeEnum.FAILED_TYPE_BUSINESS);
+            
+            // 发送邮件
+            ExamineEmailDtoReq emailReq = new ExamineEmailDtoReq ();
+            emailReq.setEmail (user.getUserEmail ());
+            emailReq.setUrl ("1234");
+            emailReq.setType (EmailTemplateEnums.EXAMINE_SUCCESS.name ());
+            emailService.sendExamineResult (emailReq);
+        } else {
+            // 审核不通过
+            // 修改用户表
+            user.setExamineStatus (ExamineStatusEnums.EXAMINE_FAIL.name ());
+            Assert.isTrue (userService.updateById (user), BizCodeEnum.FAILED_TYPE_BUSINESS);
+    
+            // 发送邮件
+            ExamineEmailDtoReq emailReq = new ExamineEmailDtoReq ();
+            emailReq.setEmail (user.getUserEmail ());
+            emailReq.setUrl ("1234");
+            emailReq.setType (EmailTemplateEnums.EXAMINE_FAIL.name ());
+            emailService.sendExamineResult (emailReq);
+        }
     }
     
     @Override

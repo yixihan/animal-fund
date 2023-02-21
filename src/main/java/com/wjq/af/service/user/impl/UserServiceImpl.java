@@ -71,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 保存用户表
         saveUser (user);
         // 保存角色表
-        saveUserRole (user.getId (), RoleEnums.USER);
+        saveUserRole (user.getId ());
     }
     
     @Override
@@ -86,7 +86,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 保存用户表
         saveUser (user);
         // 保存角色表
-        saveUserRole (user.getId (), RoleEnums.VOLUNTEER);
+        saveUserRole (user.getId ());
     }
     
     @Override
@@ -118,13 +118,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 新增用户角色
      *
-     * @param userId    用户 ID
-     * @param roleEnums 角色 {@link RoleEnums}
+     * @param userId 用户 ID
      */
-    private void saveUserRole(Long userId, RoleEnums roleEnums) {
+    private void saveUserRole(Long userId) {
         UserRole userRole = new UserRole ();
         userRole.setUserId (userId);
-        userRole.setRoleId (roleEnums.getRoleId ());
+        userRole.setRoleId (RoleEnums.USER.getRoleId ());
         
         // 保存数据库
         Assert.isTrue (userRoleService.save (userRole), BizCodeEnum.FAILED_TYPE_BUSINESS);

@@ -25,7 +25,7 @@ public class ExamineDtoReq {
     @NotNull(message = "审核内容主键 ID 不能为空")
     private Long id;
     
-    @ApiModelProperty(value = "审核结果")
+    @ApiModelProperty(value = "审核结果[通过: true, 失败: false]")
     @NotBlank(message = "审核结果不能为空")
-    private String examineStatus;
+    private Boolean examineStatus;
 }
