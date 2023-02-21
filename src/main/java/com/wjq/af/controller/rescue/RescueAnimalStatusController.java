@@ -47,7 +47,7 @@ public class RescueAnimalStatusController {
     
     @ApiOperation("更新动物救援状态")
     @RoleAccess(value = {RoleEnums.VOLUNTEER, RoleEnums.ADMIN})
-    @PostMapping(value = "/apply", produces = "application/json")
+    @PostMapping(value = "/modify", produces = "application/json")
     public void modify(@RequestBody ModifyRescueAnimalStatusDtoReq req) {
         service.modify (req);
     }
