@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.wjq.af.dto.request.PageDtoReq;
 import com.wjq.af.dto.request.comment.AddRootCommentDtoReq;
 import com.wjq.af.dto.request.comment.AddSonCommentDtoReq;
+import com.wjq.af.dto.request.comment.ReportCommentDtoReq;
 import com.wjq.af.dto.request.comment.SonCommentDetailDtoReq;
 import com.wjq.af.dto.response.PageDtoResult;
 import com.wjq.af.dto.response.comment.RootCommentDetailDtoResult;
@@ -70,4 +71,11 @@ public interface CommentRootService extends IService<CommentRoot> {
      * @return {@code PageDtoResult<SonCommentDetailDtoResult>} {@link SonCommentDetailDtoResult}
      */
     PageDtoResult<SonCommentDetailDtoResult> sonCommentDetail(SonCommentDetailDtoReq req);
+    
+    /**
+     * 举报留言
+     *
+     * @param req 请求参数
+     */
+    void reportComment(ReportCommentDtoReq req);
 }

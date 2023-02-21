@@ -8,16 +8,21 @@ import com.wjq.af.auth.service.TokenService;
 import com.wjq.af.dto.request.PageDtoReq;
 import com.wjq.af.dto.request.comment.AddRootCommentDtoReq;
 import com.wjq.af.dto.request.comment.AddSonCommentDtoReq;
+import com.wjq.af.dto.request.comment.ReportCommentDtoReq;
 import com.wjq.af.dto.request.comment.SonCommentDetailDtoReq;
 import com.wjq.af.dto.response.PageDtoResult;
 import com.wjq.af.dto.response.comment.RootCommentDetailDtoResult;
 import com.wjq.af.dto.response.comment.SonCommentDetailDtoResult;
+import com.wjq.af.enums.CommentTypeEnums;
+import com.wjq.af.enums.ExamineStatusEnums;
 import com.wjq.af.exception.BizCodeEnum;
 import com.wjq.af.exception.BizException;
 import com.wjq.af.mapper.comment.CommentRootMapper;
 import com.wjq.af.pojo.comment.CommentReply;
+import com.wjq.af.pojo.comment.CommentReport;
 import com.wjq.af.pojo.comment.CommentRoot;
 import com.wjq.af.service.comment.CommentReplyService;
+import com.wjq.af.service.comment.CommentReportService;
 import com.wjq.af.service.comment.CommentRootService;
 import com.wjq.af.utils.Assert;
 import com.wjq.af.utils.PageUtils;
@@ -44,6 +49,9 @@ public class CommentRootServiceImpl extends ServiceImpl<CommentRootMapper, Comme
     
     @Resource
     private CommentReplyService replyService;
+    
+    @Resource
+    private CommentReportService reportService;
     
     @Resource
     private TokenService tokenService;
@@ -129,6 +137,23 @@ public class CommentRootServiceImpl extends ServiceImpl<CommentRootMapper, Comme
                 rootPage,
                 (o) -> BeanUtil.toBean (o, SonCommentDetailDtoResult.class)
         );
+    }
+    
+    @Override
+    public void reportComment(ReportCommentDtoReq req) {
+        if (CommentTypeEnums.ROOT.getType ().equals (req.getMessageType ())) {
+            CommentRoot commentRoot = getById (req.getMessageId ());
+            
+            Assert.notNull (commentRoot, new BizException ("该留言不存在"));
+        } else if (CommentTypeEnums.REPLY.getType ().equals (req.getMessageType ())) {
+            CommentReply commentReply = replyService.getById (req.getMessageId ());
+    
+            Assert.notNull (commentReply, new BizException ("该留言不存在"));
+        }
+        CommentReport commentReport = BeanUtil.toBean (req, CommentReport.class);
+        commentReport.setReportStatus (ExamineStatusEnums.UN_EXAMINE.name ());
+        commentReport.setUserId (tokenService.getCacheUserId ());
+        Assert.isTrue (reportService.save (commentReport), BizCodeEnum.FAILED_TYPE_BUSINESS);
     }
     
     /**

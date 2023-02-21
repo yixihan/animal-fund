@@ -4,6 +4,7 @@ package com.wjq.af.controller.comment;
 import com.wjq.af.dto.request.PageDtoReq;
 import com.wjq.af.dto.request.comment.AddRootCommentDtoReq;
 import com.wjq.af.dto.request.comment.AddSonCommentDtoReq;
+import com.wjq.af.dto.request.comment.ReportCommentDtoReq;
 import com.wjq.af.dto.request.comment.SonCommentDetailDtoReq;
 import com.wjq.af.dto.response.JsonResponse;
 import com.wjq.af.dto.response.PageDtoResult;
@@ -78,6 +79,12 @@ public class CommentController {
     @PostMapping(value = "/all/son", produces = "application/json")
     public JsonResponse<PageDtoResult<SonCommentDetailDtoResult>> sonCommentDetail(@RequestBody SonCommentDetailDtoReq req) {
         return JsonResponse.ok (service.sonCommentDetail (req));
+    }
+    
+    @ApiOperation("举报留言")
+    @DeleteMapping(value = "/report", produces = "application/json")
+    public void reportComment(@RequestBody @Valid ReportCommentDtoReq req) {
+        service.reportComment (req);
     }
     
 }
