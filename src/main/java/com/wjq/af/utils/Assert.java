@@ -115,4 +115,16 @@ public class Assert {
             throw new BizException (BizCodeEnum.PARAMS_VALID_ERR);
         }
     }
+    
+    /**
+     * 断言对象是否为 {@code  null}，如果不为 {@code null} 抛出抛出给定的异常<br>
+     *
+     * @param obj 对象
+     * @param e 指定断言不通过时抛出的异常
+     */
+    public static void isNull(Object obj, BizException e) {
+        if (obj == null) {
+            throw e;
+        }
+    }
 }
