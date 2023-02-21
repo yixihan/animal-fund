@@ -4,6 +4,7 @@ import com.wjq.af.config.prop.CodeProp;
 import com.wjq.af.config.prop.EmailProp;
 import com.wjq.af.dto.request.thirdpart.EmailSendDtoReq;
 import com.wjq.af.dto.request.thirdpart.EmailValidateDtoReq;
+import com.wjq.af.dto.request.thirdpart.ExamineEmailDtoReq;
 import com.wjq.af.enums.EmailTemplateEnums;
 import com.wjq.af.exception.BizCodeEnum;
 import com.wjq.af.exception.BizException;
@@ -75,6 +76,29 @@ public class EmailServiceImpl implements EmailService {
         EmailTemplateEnums emailType = EmailTemplateEnums.valueOf (dtoReq.getEmailType ());
         String keyName = getRedisKey (dtoReq.getEmail (), emailType);
         codeService.validate (keyName, dtoReq.getCode ());
+    }
+    
+    @Override
+    public void sendExamineResult(ExamineEmailDtoReq req) {
+        EmailTemplateEnums emailType = EmailTemplateEnums.valueOf (req.getType ());
+        String emailContent = templateEmailService.getEmailContent (emailType.getId ());
+        try {
+            // 创建一个复杂的文件
+            MimeMessage mailMessage = mailSender.createMimeMessage ();
+            // 组装邮件
+            MimeMessageHelper helper = new MimeMessageHelper (mailMessage, true, "utf-8");
+            helper.setSubject (emailProp.getTitle ());
+            helper.setText (String.format (emailContent, req.getUrl ()), true);
+            // 收件人
+            helper.setTo (req.getEmail ());
+            // 发件人
+            helper.setFrom (emailProp.getSendEmail ());
+            // 发送
+            mailSender.send (mailMessage);
+        } catch (MessagingException e) {
+            log.error ("邮件发送失败 : {}", e.getMessage ());
+            throw new BizException (BizCodeEnum.EMAIL_SEND_ERR);
+        }
     }
     
     /**
