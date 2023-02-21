@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -36,31 +37,31 @@ public class RescueAnimalStatusController {
     
     @Resource
     private RescueAnimalStatusService service;
-
-    @ApiOperation ("申请对动物进行救治")
+    
+    @ApiOperation("申请对动物进行救治")
     @RoleAccess(value = RoleEnums.VOLUNTEER)
     @PostMapping(value = "/apply", produces = "application/json")
-    public void apply (@RequestBody ApplyRescueAnimalDtoReq req) {
+    public void apply(@RequestBody @Valid ApplyRescueAnimalDtoReq req) {
         service.apply (req);
     }
-
-    @ApiOperation ("更新动物救援状态")
+    
+    @ApiOperation("更新动物救援状态")
     @RoleAccess(value = {RoleEnums.VOLUNTEER, RoleEnums.ADMIN})
     @PostMapping(value = "/apply", produces = "application/json")
-    public void modify (@RequestBody ModifyRescueAnimalStatusDtoReq req) {
+    public void modify(@RequestBody ModifyRescueAnimalStatusDtoReq req) {
         service.modify (req);
     }
-
-    @ApiOperation ("查看动物救援状态")
+    
+    @ApiOperation("查看动物救援状态")
     @GetMapping(value = "/get", produces = "application/json")
-    public JsonResponse<RescueAnimalStatusDtoResult> get (@RequestParam @Valid Long id) {
+    public JsonResponse<RescueAnimalStatusDtoResult> get(@RequestParam @NotNull Long id) {
         return JsonResponse.ok (service.get (id));
     }
-
-    @ApiOperation ("搜索动物救援状态")
+    
+    @ApiOperation("搜索动物救援状态")
     @PostMapping(value = "/query", produces = "application/json")
-    public JsonResponse<PageDtoResult<RescueAnimalStatusDtoResult>> query (@RequestParam @Valid QueryRescueAnimalStatusDtoReq req) {
+    public JsonResponse<PageDtoResult<RescueAnimalStatusDtoResult>> query(@RequestParam QueryRescueAnimalStatusDtoReq req) {
         return JsonResponse.ok (service.query (req));
     }
-
+    
 }

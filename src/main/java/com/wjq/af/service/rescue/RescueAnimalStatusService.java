@@ -1,12 +1,12 @@
 package com.wjq.af.service.rescue;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.wjq.af.dto.request.rescue.ApplyRescueAnimalDtoReq;
 import com.wjq.af.dto.request.rescue.ModifyRescueAnimalStatusDtoReq;
 import com.wjq.af.dto.request.rescue.QueryRescueAnimalStatusDtoReq;
 import com.wjq.af.dto.response.PageDtoResult;
 import com.wjq.af.dto.response.rescue.RescueAnimalStatusDtoResult;
 import com.wjq.af.pojo.rescue.RescueAnimalStatus;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>

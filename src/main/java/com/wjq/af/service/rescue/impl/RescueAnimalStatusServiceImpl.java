@@ -11,6 +11,7 @@ import com.wjq.af.dto.request.rescue.QueryRescueAnimalStatusDtoReq;
 import com.wjq.af.dto.response.PageDtoResult;
 import com.wjq.af.dto.response.rescue.RescueAnimalStatusDtoResult;
 import com.wjq.af.enums.ExamineStatusEnums;
+import com.wjq.af.exception.BizCodeEnum;
 import com.wjq.af.exception.BizException;
 import com.wjq.af.mapper.rescue.RescueAnimalStatusMapper;
 import com.wjq.af.pojo.rescue.RescueAnimalInfo;
@@ -59,7 +60,7 @@ public class RescueAnimalStatusServiceImpl extends ServiceImpl<RescueAnimalStatu
         Assert.isNull (rescueAnimalStatus.getUserId (), new BizException ("该动物已被其他用户申请救援"));
         rescueAnimalStatus.setUserId (tokenService.getCacheUserId ());
         
-        updateById (rescueAnimalStatus);
+        Assert.isTrue (updateById (rescueAnimalStatus), BizCodeEnum.FAILED_TYPE_BUSINESS);
     }
     
     @Override
@@ -67,7 +68,7 @@ public class RescueAnimalStatusServiceImpl extends ServiceImpl<RescueAnimalStatu
         RescueAnimalStatus rescueAnimalStatus = BeanUtil.toBean (req, RescueAnimalStatus.class);
         
         rescueAnimalStatus.setVersion (getById (req.getId ()).getVersion ());
-        updateById (rescueAnimalStatus);
+        Assert.isTrue (updateById (rescueAnimalStatus), BizCodeEnum.FAILED_TYPE_BUSINESS);
     }
     
     @Override
