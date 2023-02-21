@@ -89,13 +89,13 @@ public class ExamineController {
     }
     
     @ApiOperation ("查看待审核举报留言")
-    @GetMapping(value = "/list/rescue/capital", produces = "application/json")
+    @GetMapping(value = "/list/comment", produces = "application/json")
     public JsonResponse<PageDtoResult<CommentReportDtoResult>> unExamineComment (@RequestBody PageDtoReq req) {
         return JsonResponse.ok (service.unExamineComment (req));
     }
     
     @ApiOperation ("审核举报留言")
-    @PostMapping(value = "/examine/rescue/capital", produces = "application/json")
+    @PostMapping(value = "/examine/comment", produces = "application/json")
     public void examineComment (@RequestBody @Valid ExamineDtoReq req) {
         service.examineComment (req);
     }
