@@ -71,7 +71,7 @@ public class RescueAnimalInfoServiceImpl extends ServiceImpl<RescueAnimalInfoMap
                 .eq (StrUtil.isNotBlank (req.getInjuryDegree ()), RescueAnimalInfo::getInjuryDegree, req.getInjuryDegree ())
                 .eq (RescueAnimalInfo::getExamineStatus, ExamineStatusEnums.EXAMINE_SUCCESS.getValue ())
                 .orderByDesc (RescueAnimalInfo::getCreateTime)
-                .page (new Page<> (req.getPage (), req.getPageSize (), req.getSearchCount ()));
+                .page (PageUtils.toPage (req));
         
         return PageUtils.pageToPageDtoResult (
                 pages,
@@ -87,7 +87,7 @@ public class RescueAnimalInfoServiceImpl extends ServiceImpl<RescueAnimalInfoMap
         Page<RescueAnimalInfo> pages = this.lambdaQuery ()
                 .eq (RescueAnimalInfo::getUserId, req.getUserId ())
                 .orderByDesc (RescueAnimalInfo::getCreateTime)
-                .page (new Page<> (req.getPage (), req.getPageSize (), req.getSearchCount ()));
+                .page (PageUtils.toPage (req));
     
         return PageUtils.pageToPageDtoResult (
                 pages,

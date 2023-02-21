@@ -92,7 +92,7 @@ public class CommentRootServiceImpl extends ServiceImpl<CommentRootMapper, Comme
         // 分页查询留言板
         Page<CommentRoot> rootPage = this.lambdaQuery ()
                 .orderByDesc (CommentRoot::getCreateTime)
-                .page (new Page<> (req.getPage (), req.getPageSize (), req.getSearchCount ()));
+                .page (PageUtils.toPage (req));
     
         // 转换为 RootCommentDetailDtoResult 格式
         PageDtoResult<RootCommentDetailDtoResult> pageDtoResult = PageUtils.pageToPageDtoResult (
@@ -122,7 +122,7 @@ public class CommentRootServiceImpl extends ServiceImpl<CommentRootMapper, Comme
         Page<CommentReply> rootPage = replyService.lambdaQuery ()
                 .eq (CommentReply::getRootId, req.getRootId ())
                 .orderByDesc (CommentReply::getCreateTime)
-                .page (new Page<> (req.getPage (), req.getPageSize (), req.getSearchCount ()));
+                .page (PageUtils.toPage (req));
     
         // 转换为 RootCommentDetailDtoResult 格式
         return PageUtils.pageToPageDtoResult (
