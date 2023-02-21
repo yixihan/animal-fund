@@ -12,6 +12,7 @@ import com.wjq.af.dto.response.rescue.RescueAnimalCapitalDetailDtoResult;
 import com.wjq.af.dto.response.rescue.RescueAnimalInfoDtoResult;
 import com.wjq.af.dto.response.rescue.RescueAnimalStatusDtoResult;
 import com.wjq.af.dto.response.user.UserDtoResult;
+import com.wjq.af.enums.CommentTypeEnums;
 import com.wjq.af.enums.EmailTemplateEnums;
 import com.wjq.af.enums.ExamineStatusEnums;
 import com.wjq.af.exception.BizCodeEnum;
@@ -22,7 +23,9 @@ import com.wjq.af.pojo.rescue.RescueAnimalInfo;
 import com.wjq.af.pojo.rescue.RescueAnimalStatus;
 import com.wjq.af.pojo.user.User;
 import com.wjq.af.pojo.user.UserRole;
+import com.wjq.af.service.comment.CommentReplyService;
 import com.wjq.af.service.comment.CommentReportService;
+import com.wjq.af.service.comment.CommentRootService;
 import com.wjq.af.service.examine.ExamineService;
 import com.wjq.af.service.rescue.RescueAnimalCapitalDetailService;
 import com.wjq.af.service.rescue.RescueAnimalInfoService;
@@ -67,6 +70,12 @@ public class ExamineServiceImpl implements ExamineService {
     private CommentReportService commentReportService;
     
     @Resource
+    private CommentRootService commentRootService;
+    
+    @Resource
+    private CommentReplyService commentReplyService;
+    
+    @Resource
     private EmailService emailService;
     
     @Override
@@ -88,8 +97,8 @@ public class ExamineServiceImpl implements ExamineService {
         User user = userService.getById (req.getId ());
     
         Assert.notNull (user, new BizException ("没有该志愿者信息"));
-        Assert.isFalse (ExamineStatusEnums.EXAMINE_SUCCESS.getValue ().equals (user.getExamineStatus ()),
-                new BizException ("该志愿者已审核通过"));
+        Assert.isTrue (ExamineStatusEnums.UN_EXAMINE.getValue ().equals (user.getExamineStatus ()),
+                new BizException ("该志愿者已审核"));
         
         if (req.getExamineStatus ()) {
             // 审核通过
@@ -106,6 +115,7 @@ public class ExamineServiceImpl implements ExamineService {
             // 发送邮件
             ExamineEmailDtoReq emailReq = new ExamineEmailDtoReq ();
             emailReq.setEmail (user.getUserEmail ());
+            // TODO 待确认审核结果网址
             emailReq.setUrl ("1234");
             emailReq.setType (EmailTemplateEnums.EXAMINE_SUCCESS.name ());
             emailService.sendExamineResult (emailReq);
@@ -118,6 +128,7 @@ public class ExamineServiceImpl implements ExamineService {
             // 发送邮件
             ExamineEmailDtoReq emailReq = new ExamineEmailDtoReq ();
             emailReq.setEmail (user.getUserEmail ());
+            // TODO 待确认审核结果网址
             emailReq.setUrl ("1234");
             emailReq.setType (EmailTemplateEnums.EXAMINE_FAIL.name ());
             emailService.sendExamineResult (emailReq);
@@ -193,6 +204,49 @@ public class ExamineServiceImpl implements ExamineService {
     
     @Override
     public void examineComment(ExamineDtoReq req) {
+        CommentReport commentReport = commentReportService.getById (req.getId ());
     
+        Assert.notNull (commentReport, new BizException ("没有该举报信息"));
+        Assert.isTrue (ExamineStatusEnums.UN_EXAMINE.getValue ().equals (commentReport.getReportStatus ()),
+                new BizException ("该举报已审核"));
+    
+        if (req.getExamineStatus ()) {
+            // 审核通过
+            // 修改用户表
+            commentReport.setReportStatus (ExamineStatusEnums.EXAMINE_SUCCESS.name ());
+            Assert.isTrue (commentReportService.updateById (commentReport),
+                    BizCodeEnum.FAILED_TYPE_BUSINESS);
+        
+            // 删除该留言
+            if (CommentTypeEnums.ROOT.getType ().equals (commentReport.getMessageType ())) {
+                Assert.isTrue (commentRootService.removeById (commentReport.getMessageId ()),
+                        BizCodeEnum.FAILED_TYPE_BUSINESS);
+            } else if (CommentTypeEnums.REPLY.getType ().equals (commentReport.getMessageType ())) {
+                Assert.isTrue (commentReplyService.removeById (commentReport.getMessageId ()),
+                        BizCodeEnum.FAILED_TYPE_BUSINESS);
+            }
+        
+            // 发送邮件
+            ExamineEmailDtoReq emailReq = new ExamineEmailDtoReq ();
+            emailReq.setEmail (userService.getById (commentReport.getUserId ()).getUserEmail ());
+            // TODO 待确认审核结果网址
+            emailReq.setUrl ("1234");
+            emailReq.setType (EmailTemplateEnums.EXAMINE_SUCCESS.name ());
+            emailService.sendExamineResult (emailReq);
+        } else {
+            // 审核不通过
+            // 修改用户表
+            commentReport.setReportStatus (ExamineStatusEnums.EXAMINE_FAIL.name ());
+            Assert.isTrue (commentReportService.updateById (commentReport),
+                    BizCodeEnum.FAILED_TYPE_BUSINESS);
+        
+            // 发送邮件
+            ExamineEmailDtoReq emailReq = new ExamineEmailDtoReq ();
+            emailReq.setEmail (userService.getById (commentReport.getUserId ()).getUserEmail ());
+            // TODO 待确认审核结果网址
+            emailReq.setUrl ("1234");
+            emailReq.setType (EmailTemplateEnums.EXAMINE_FAIL.name ());
+            emailService.sendExamineResult (emailReq);
+        }
     }
 }
