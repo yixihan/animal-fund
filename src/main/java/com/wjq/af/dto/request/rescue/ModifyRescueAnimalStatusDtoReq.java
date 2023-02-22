@@ -28,6 +28,9 @@ public class ModifyRescueAnimalStatusDtoReq {
     @ApiModelProperty(value = "资金预算")
     private BigDecimal capitalBudget;
     
+    @ApiModelProperty(value = "救援状态[救援成功: SUCCESS, 救援失败:FAIL]")
+    private String rescueStatus;
+    
     @ApiModelProperty(value = "动物救援前情况(照片)")
     private String animalBeforeRescueImg;
     

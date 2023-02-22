@@ -60,7 +60,7 @@ public class RescueAnimalStatusController {
     
     @ApiOperation("搜索动物救援状态")
     @PostMapping(value = "/query", produces = "application/json")
-    public JsonResponse<PageDtoResult<RescueAnimalStatusDtoResult>> query(@RequestParam QueryRescueAnimalStatusDtoReq req) {
+    public JsonResponse<PageDtoResult<RescueAnimalStatusDtoResult>> query(@RequestBody QueryRescueAnimalStatusDtoReq req) {
         return JsonResponse.ok (service.query (req));
     }
     

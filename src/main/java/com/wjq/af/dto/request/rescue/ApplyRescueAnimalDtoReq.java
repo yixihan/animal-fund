@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 /**
  * 申请救援动物-dtoReq
@@ -23,4 +24,8 @@ public class ApplyRescueAnimalDtoReq {
     @ApiModelProperty(value = "救援动物信息 ID")
     @NotNull(message = "救援动物信息 ID 不能为空")
     private Long rescueId;
+    
+    @ApiModelProperty(value = "资金预算")
+    @NotNull(message = "资金预算不能为空")
+    private BigDecimal capitalBudget;
 }

@@ -15,6 +15,7 @@ import com.wjq.af.dto.response.user.UserDtoResult;
 import com.wjq.af.enums.CommentTypeEnums;
 import com.wjq.af.enums.EmailTemplateEnums;
 import com.wjq.af.enums.ExamineStatusEnums;
+import com.wjq.af.enums.RescueStatusEnums;
 import com.wjq.af.exception.BizCodeEnum;
 import com.wjq.af.exception.BizException;
 import com.wjq.af.pojo.comment.CommentReport;
@@ -150,7 +151,49 @@ public class ExamineServiceImpl implements ExamineService {
     
     @Override
     public void examineRescueAnimalInfo(ExamineDtoReq req) {
+        RescueAnimalInfo rescueAnimalInfo = rescueAnimalInfoService.getById (req.getId ());
     
+        Assert.notNull (rescueAnimalInfo, new BizException ("没有该救援动物信息"));
+        Assert.isTrue (ExamineStatusEnums.UN_EXAMINE.getValue ().equals (rescueAnimalInfo.getExamineStatus ()),
+                new BizException ("该该救援动物已审核"));
+    
+        if (req.getExamineStatus ()) {
+            // 审核通过
+            // 修改救援动物信息表
+            rescueAnimalInfo.setExamineStatus (ExamineStatusEnums.EXAMINE_SUCCESS.name ());
+            Assert.isTrue (rescueAnimalInfoService.updateById (rescueAnimalInfo),
+                    BizCodeEnum.FAILED_TYPE_BUSINESS);
+        
+            // 创建救援动物状态表
+            RescueAnimalStatus rescueAnimalStatus = new RescueAnimalStatus ();
+            rescueAnimalStatus.setRescueId (rescueAnimalInfo.getId ());
+            rescueAnimalStatus.setRescueStatus (RescueStatusEnums.UN_DO.getValue ());
+            rescueAnimalStatus.setAnimalBeforeRescueImg (rescueAnimalInfo.getApplyImg ());
+            Assert.isTrue (rescueAnimalStatusService.save (rescueAnimalStatus),
+                    BizCodeEnum.FAILED_TYPE_BUSINESS);
+        
+            // 发送邮件
+            ExamineEmailDtoReq emailReq = new ExamineEmailDtoReq ();
+            emailReq.setEmail (userService.getById (rescueAnimalInfo.getUserId ()).getUserEmail ());
+            // TODO 待确认审核结果网址
+            emailReq.setUrl ("1234");
+            emailReq.setType (EmailTemplateEnums.EXAMINE_SUCCESS.name ());
+            emailService.sendExamineResult (emailReq);
+        } else {
+            // 审核不通过
+            // 修改救援动物信息表
+            rescueAnimalInfo.setExamineStatus (ExamineStatusEnums.EXAMINE_FAIL.name ());
+            Assert.isTrue (rescueAnimalInfoService.updateById (rescueAnimalInfo),
+                    BizCodeEnum.FAILED_TYPE_BUSINESS);
+        
+            // 发送邮件
+            ExamineEmailDtoReq emailReq = new ExamineEmailDtoReq ();
+            emailReq.setEmail (userService.getById (rescueAnimalInfo.getUserId ()).getUserEmail ());
+            // TODO 待确认审核结果网址
+            emailReq.setUrl ("1234");
+            emailReq.setType (EmailTemplateEnums.EXAMINE_FAIL.name ());
+            emailService.sendExamineResult (emailReq);
+        }
     }
     
     @Override
@@ -168,7 +211,46 @@ public class ExamineServiceImpl implements ExamineService {
     
     @Override
     public void examineRescueAnimalStatus(ExamineDtoReq req) {
+        RescueAnimalStatus rescueAnimalStatus = rescueAnimalStatusService.getById (req.getId ());
     
+        Assert.notNull (rescueAnimalStatus, new BizException ("没有该救援动物申请信息"));
+        Assert.isTrue (ExamineStatusEnums.UN_EXAMINE.getValue ().equals (rescueAnimalStatus.getExamineStatus ()),
+                new BizException ("该该救援动物申请已审核"));
+    
+        if (req.getExamineStatus ()) {
+            // 审核通过
+            // 修改救援动物状态表
+            rescueAnimalStatus.setExamineStatus (ExamineStatusEnums.EXAMINE_SUCCESS.name ());
+            rescueAnimalStatus.setRescueStatus (RescueStatusEnums.FUNDRAISING.getValue ());
+            Assert.isTrue (rescueAnimalStatusService.updateById (rescueAnimalStatus),
+                    BizCodeEnum.FAILED_TYPE_BUSINESS);
+            
+            // 发送邮件
+            ExamineEmailDtoReq emailReq = new ExamineEmailDtoReq ();
+            emailReq.setEmail (userService.getById (rescueAnimalStatus.getUserId ()).getUserEmail ());
+            // TODO 待确认审核结果网址
+            emailReq.setUrl ("1234");
+            emailReq.setType (EmailTemplateEnums.EXAMINE_SUCCESS.name ());
+            emailService.sendExamineResult (emailReq);
+        } else {
+            // 审核不通过
+            // 发送邮件
+            ExamineEmailDtoReq emailReq = new ExamineEmailDtoReq ();
+            emailReq.setEmail (userService.getById (rescueAnimalStatus.getUserId ()).getUserEmail ());
+            // TODO 待确认审核结果网址
+            emailReq.setUrl ("1234");
+            emailReq.setType (EmailTemplateEnums.EXAMINE_FAIL.name ());
+            emailService.sendExamineResult (emailReq);
+            
+            
+            // 修改救援动物状态表
+            rescueAnimalStatus.setExamineStatus (ExamineStatusEnums.UN_EXAMINE.name ());
+            rescueAnimalStatus.setRescueStatus (RescueStatusEnums.UN_DO.getValue ());
+            rescueAnimalStatus.setUserId (null);
+            rescueAnimalStatus.setCapitalBudget (null);
+            Assert.isTrue (rescueAnimalStatusService.updateById (rescueAnimalStatus),
+                    BizCodeEnum.FAILED_TYPE_BUSINESS);
+        }
     }
     
     @Override
@@ -186,7 +268,45 @@ public class ExamineServiceImpl implements ExamineService {
     
     @Override
     public void examineRescueAnimalCapitalDetail(ExamineDtoReq req) {
+        RescueAnimalCapitalDetail rescueAnimalCapitalDetail = rescueAnimalCapitalDetailService.getById (req.getId ());
     
+        Assert.notNull (rescueAnimalCapitalDetail, new BizException ("没有该救援动物资金明细信息"));
+        Assert.isTrue (ExamineStatusEnums.UN_EXAMINE.getValue ().equals (rescueAnimalCapitalDetail.getExamineStatus ()),
+                new BizException ("该该救援动物资金明细已审核"));
+    
+        RescueAnimalStatus rescueAnimalStatus = rescueAnimalStatusService.lambdaQuery ()
+                .eq (RescueAnimalStatus::getRescueId, rescueAnimalCapitalDetail.getRescueId ())
+                .one ();
+    
+        if (req.getExamineStatus ()) {
+            // 审核通过
+            // 修改救援动物资金明细表
+            rescueAnimalCapitalDetail.setExamineStatus (ExamineStatusEnums.EXAMINE_SUCCESS.name ());
+            Assert.isTrue (rescueAnimalCapitalDetailService.updateById (rescueAnimalCapitalDetail),
+                    BizCodeEnum.FAILED_TYPE_BUSINESS);
+        
+            // 发送邮件
+            ExamineEmailDtoReq emailReq = new ExamineEmailDtoReq ();
+            emailReq.setEmail (userService.getById (rescueAnimalStatus.getUserId ()).getUserEmail ());
+            // TODO 待确认审核结果网址
+            emailReq.setUrl ("1234");
+            emailReq.setType (EmailTemplateEnums.EXAMINE_SUCCESS.name ());
+            emailService.sendExamineResult (emailReq);
+        } else {
+            // 审核不通过
+            // 修改救援动物状态表
+            rescueAnimalCapitalDetail.setExamineStatus (ExamineStatusEnums.UN_EXAMINE.name ());
+            Assert.isTrue (rescueAnimalCapitalDetailService.updateById (rescueAnimalCapitalDetail),
+                    BizCodeEnum.FAILED_TYPE_BUSINESS);
+            
+            // 发送邮件
+            ExamineEmailDtoReq emailReq = new ExamineEmailDtoReq ();
+            emailReq.setEmail (userService.getById (rescueAnimalStatus.getUserId ()).getUserEmail ());
+            // TODO 待确认审核结果网址
+            emailReq.setUrl ("1234");
+            emailReq.setType (EmailTemplateEnums.EXAMINE_FAIL.name ());
+            emailService.sendExamineResult (emailReq);
+        }
     }
     
     @Override
@@ -212,7 +332,7 @@ public class ExamineServiceImpl implements ExamineService {
     
         if (req.getExamineStatus ()) {
             // 审核通过
-            // 修改用户表
+            // 修改留言举报表
             commentReport.setReportStatus (ExamineStatusEnums.EXAMINE_SUCCESS.name ());
             Assert.isTrue (commentReportService.updateById (commentReport),
                     BizCodeEnum.FAILED_TYPE_BUSINESS);
@@ -235,7 +355,7 @@ public class ExamineServiceImpl implements ExamineService {
             emailService.sendExamineResult (emailReq);
         } else {
             // 审核不通过
-            // 修改用户表
+            // 修改留言举报表
             commentReport.setReportStatus (ExamineStatusEnums.EXAMINE_FAIL.name ());
             Assert.isTrue (commentReportService.updateById (commentReport),
                     BizCodeEnum.FAILED_TYPE_BUSINESS);
