@@ -61,13 +61,13 @@ public class CommentRootServiceImpl extends ServiceImpl<CommentRootMapper, Comme
         CommentRoot commentRoot = BeanUtil.toBean (req, CommentRoot.class);
         commentRoot.setUserId (tokenService.getCacheUserId ());
     
-        Assert.isTrue (this.save (commentRoot), BizCodeEnum.FAILED_TYPE_BUSINESS);
+        Assert.isTrue (save (commentRoot), BizCodeEnum.FAILED_TYPE_BUSINESS);
     }
     
     @Override
     public void addSonComment(AddSonCommentDtoReq req) {
         // 校验留言是否存在
-        int count = this.lambdaQuery ()
+        int count = lambdaQuery ()
                 .eq (CommentRoot::getId, req.getRootId ())
                 .count ();
         
@@ -81,7 +81,7 @@ public class CommentRootServiceImpl extends ServiceImpl<CommentRootMapper, Comme
     
     @Override
     public void delRootComment(Long rootCommentId) {
-        Assert.isTrue (this.removeById (rootCommentId), BizCodeEnum.FAILED_TYPE_BUSINESS);
+        Assert.isTrue (removeById (rootCommentId), BizCodeEnum.FAILED_TYPE_BUSINESS);
         
     }
     
@@ -92,13 +92,13 @@ public class CommentRootServiceImpl extends ServiceImpl<CommentRootMapper, Comme
     
     @Override
     public Integer commentCount() {
-        return this.count () + replyService.count ();
+        return count () + replyService.count ();
     }
     
     @Override
     public PageDtoResult<RootCommentDetailDtoResult> rootCommentDetail(PageDtoReq req) {
         // 分页查询留言板
-        Page<CommentRoot> rootPage = this.lambdaQuery ()
+        Page<CommentRoot> rootPage = lambdaQuery ()
                 .orderByDesc (CommentRoot::getCreateTime)
                 .page (PageUtils.toPage (req));
     

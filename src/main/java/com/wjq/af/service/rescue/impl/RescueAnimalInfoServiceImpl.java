@@ -41,32 +41,32 @@ public class RescueAnimalInfoServiceImpl extends ServiceImpl<RescueAnimalInfoMap
         rescueAnimalInfo.setUserId (tokenService.getCacheUserId ());
         rescueAnimalInfo.setExamineStatus (ExamineStatusEnums.UN_EXAMINE.getValue ());
     
-        Assert.isTrue (this.save (rescueAnimalInfo), BizCodeEnum.FAILED_TYPE_BUSINESS);
+        Assert.isTrue (save (rescueAnimalInfo), BizCodeEnum.FAILED_TYPE_BUSINESS);
     }
     
     @Override
     public void modify(ModifyRescueAnimalInfoDtoReq req) {
         RescueAnimalInfo rescueAnimalInfo = BeanUtil.toBean (req, RescueAnimalInfo.class);
         rescueAnimalInfo.setUserId (tokenService.getCacheUserId ());
-        rescueAnimalInfo.setVersion (this.getById (req.getId ()).getVersion ());
+        rescueAnimalInfo.setVersion (getById (req.getId ()).getVersion ());
     
     
-        Assert.isTrue (this.updateById (rescueAnimalInfo), BizCodeEnum.FAILED_TYPE_BUSINESS);
+        Assert.isTrue (updateById (rescueAnimalInfo), BizCodeEnum.FAILED_TYPE_BUSINESS);
     }
     
     @Override
     public void del(Long id) {
-        Assert.isTrue (this.removeById (id), BizCodeEnum.FAILED_TYPE_BUSINESS);
+        Assert.isTrue (removeById (id), BizCodeEnum.FAILED_TYPE_BUSINESS);
     }
     
     @Override
     public RescueAnimalInfoDtoResult get(Long id) {
-        return BeanUtil.toBean (this.getById (id), RescueAnimalInfoDtoResult.class);
+        return BeanUtil.toBean (getById (id), RescueAnimalInfoDtoResult.class);
     }
     
     @Override
     public PageDtoResult<RescueAnimalInfoDtoResult> query(QueryRescueAnimalInfoDtoReq req) {
-        Page<RescueAnimalInfo> pages = this.lambdaQuery ()
+        Page<RescueAnimalInfo> pages = lambdaQuery ()
                 .eq (StrUtil.isNotBlank (req.getAnimalType ()), RescueAnimalInfo::getAnimalType, req.getAnimalType ())
                 .eq (StrUtil.isNotBlank (req.getInjuryDegree ()), RescueAnimalInfo::getInjuryDegree, req.getInjuryDegree ())
                 .eq (RescueAnimalInfo::getExamineStatus, ExamineStatusEnums.EXAMINE_SUCCESS.getValue ())
@@ -84,7 +84,7 @@ public class RescueAnimalInfoServiceImpl extends ServiceImpl<RescueAnimalInfoMap
         if (req.getUserId () == null) {
             req.setUserId (tokenService.getCacheUserId ());
         }
-        Page<RescueAnimalInfo> pages = this.lambdaQuery ()
+        Page<RescueAnimalInfo> pages = lambdaQuery ()
                 .eq (RescueAnimalInfo::getUserId, req.getUserId ())
                 .orderByDesc (RescueAnimalInfo::getCreateTime)
                 .page (PageUtils.toPage (req));

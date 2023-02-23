@@ -44,7 +44,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
             return new ArrayList<> ();
         }
         
-        List<Role> roleList = this.lambdaQuery ()
+        List<Role> roleList = lambdaQuery ()
                 .in (Role::getId, roleIdList)
                 .list ();
         

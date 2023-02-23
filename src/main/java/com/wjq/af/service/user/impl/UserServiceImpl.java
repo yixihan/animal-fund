@@ -2,6 +2,7 @@ package com.wjq.af.service.user.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wjq.af.auth.enums.RoleEnums;
 import com.wjq.af.auth.service.TokenService;
@@ -53,7 +54,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     
     @Override
     public UserDtoResult getUserInfo(Long userId) {
-        User user = this.lambdaQuery ()
+        User user = lambdaQuery ()
                 .eq (User::getId, userId)
                 .one ();
         Assert.notNull (user, BizCodeEnum.ACCOUNT_NOT_FOUND);
@@ -64,6 +65,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional(rollbackFor = BizException.class)
     public void registerUser(RegisterUserDtoReq req) {
+        // 校验手机号
+        validateMobile (req.getUserMobile ());
+        // 校验邮箱
+        validateEmail (req.getUserEmail ());
         // 实名认证
         realNameAuth (req);
     
@@ -77,6 +82,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional(rollbackFor = BizException.class)
     public void registerVolunteer(RegisterVolunteerDtoReq req) {
+        // 校验手机号
+        validateMobile (req.getUserMobile ());
+        // 校验邮箱
+        validateEmail (req.getUserEmail ());
         // 实名认证
         realNameAuth (req);
         
@@ -91,15 +100,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     
     @Override
     public void modifyUserInfo(ModifyUserDtoReq req) {
+        // 校验手机号
+        if (StrUtil.isNotBlank (req.getUserMobile ())) {
+            validateMobile (req.getUserMobile ());
+        }
+        // 校验邮箱
+        if (StrUtil.isNotBlank (req.getUserEmail ())) {
+            validateEmail (req.getUserEmail ());
+        }
         // 获取登录用户用户 ID
         Long userId = tokenService.getCacheUserId ();
         // 获取乐观锁
-        Integer version = this.getById (userId).getVersion ();
+        Integer version = getById (userId).getVersion ();
         User user = BeanUtil.toBean (req, User.class);
         user.setId (userId);
         user.setVersion (version);
     
-        Assert.isTrue (this.updateById (user), BizCodeEnum.FAILED_TYPE_BUSINESS);
+        Assert.isTrue (updateById (user), BizCodeEnum.FAILED_TYPE_BUSINESS);
     }
     
     @Override
@@ -110,7 +127,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public void cancellation() {
         // 删除账户
-        this.removeById (tokenService.getCacheUserId ());
+        removeById (tokenService.getCacheUserId ());
         // 登出
         logout ();
     }
@@ -142,7 +159,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setUserSalt (salt);
         
         // 保存数据库
-        Assert.isTrue (this.save (user), BizCodeEnum.FAILED_TYPE_BUSINESS);
+        Assert.isTrue (save (user), BizCodeEnum.FAILED_TYPE_BUSINESS);
     }
     
     /**
@@ -155,5 +172,31 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         authReq.setIdCard (req.getUserIdCard ());
         authReq.setRealName (req.getUserFullName ());
         realNameAuthService.auth (authReq);
+    }
+    
+    /**
+     * 校验手机号
+     *
+     * @param email 邮箱
+     */
+    private void validateEmail(String email) {
+        Integer count = lambdaQuery ()
+                .eq (User::getUserEmail, email)
+                .count ();
+        
+        Assert.isTrue (count == 0, new BizException ("该邮箱已被其他用户绑定"));
+    }
+    
+    /**
+     * 校验手机号
+     * 
+     * @param mobile 手机号
+     */
+    private void validateMobile(String mobile) {
+        Integer count = lambdaQuery ()
+                .eq (User::getUserMobile, mobile)
+                .count ();
+        
+        Assert.isTrue (count == 0, new BizException ("该手机号已被其他用户绑定"));
     }
 }
