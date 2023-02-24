@@ -68,7 +68,7 @@ public class InitResourceMap {
         // 获取 RoleEnum
         RoleEnums[] classRoleEnums;
         if (classRoleAccess == null || ArrayUtil.isEmpty (classRoleAccess.value ())) {
-            classRoleEnums = new RoleEnums[]{RoleEnums.USER};
+            classRoleEnums = new RoleEnums[]{RoleEnums.USER, RoleEnums.VOLUNTEER, RoleEnums.ADMIN};
         } else {
             classRoleEnums = classRoleAccess.value ();
         }

@@ -2,6 +2,7 @@ package com.wjq.af.controller.user;
 
 
 import com.wjq.af.auth.annotation.RoleAccess;
+import com.wjq.af.auth.enums.RoleEnums;
 import com.wjq.af.dto.request.user.ModifyUserDtoReq;
 import com.wjq.af.dto.request.user.RegisterUserDtoReq;
 import com.wjq.af.dto.request.user.RegisterVolunteerDtoReq;
@@ -59,6 +60,7 @@ public class UserController {
     }
     
     @ApiOperation("注册志愿者")
+    @RoleAccess(value = RoleEnums.ADMIN)
     @PostMapping(value = "/register/volunteer", produces = "application/json")
     public void registerVolunteer(@RequestBody @Valid RegisterVolunteerDtoReq req) {
         // 参数校验

@@ -30,6 +30,7 @@ import javax.validation.constraints.NotNull;
  */
 @Slf4j
 @Validated
+@RoleAccess(value = RoleEnums.VOLUNTEER)
 @RestController
 @RequestMapping("/open/rescue/status")
 @Api(tags = "救援动物状态 OpenApi")
@@ -53,12 +54,14 @@ public class RescueAnimalStatusController {
     }
     
     @ApiOperation("查看动物救援状态")
+    @RoleAccess
     @GetMapping(value = "/get", produces = "application/json")
     public JsonResponse<RescueAnimalStatusDtoResult> get(@RequestParam @NotNull Long id) {
         return JsonResponse.ok (service.get (id));
     }
     
     @ApiOperation("搜索动物救援状态")
+    @RoleAccess
     @PostMapping(value = "/query", produces = "application/json")
     public JsonResponse<PageDtoResult<RescueAnimalStatusDtoResult>> query(@RequestBody QueryRescueAnimalStatusDtoReq req) {
         return JsonResponse.ok (service.query (req));

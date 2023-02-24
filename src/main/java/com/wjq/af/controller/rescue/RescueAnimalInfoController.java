@@ -1,6 +1,8 @@
 package com.wjq.af.controller.rescue;
 
 
+import com.wjq.af.auth.annotation.RoleAccess;
+import com.wjq.af.auth.enums.RoleEnums;
 import com.wjq.af.dto.request.rescue.ModifyRescueAnimalInfoDtoReq;
 import com.wjq.af.dto.request.rescue.QueryRescueAnimalInfoDtoReq;
 import com.wjq.af.dto.request.rescue.UserRescueAnimalInfoDtoReq;
@@ -29,6 +31,7 @@ import javax.validation.constraints.NotNull;
  */
 @Slf4j
 @Validated
+@RoleAccess(value = {RoleEnums.VOLUNTEER, RoleEnums.USER})
 @RestController
 @RequestMapping("/open/rescue/info")
 @Api(tags = "救援动物信息 OpenApi")
@@ -65,6 +68,7 @@ public class RescueAnimalInfoController {
     }
     
     @ApiOperation ("搜索救援动物信息")
+    @RoleAccess
     @PostMapping(value = "/query", produces = "application/json")
     public JsonResponse<PageDtoResult<RescueAnimalInfoDtoResult>> query (@RequestBody QueryRescueAnimalInfoDtoReq req) {
         return JsonResponse.ok (service.query (req));
