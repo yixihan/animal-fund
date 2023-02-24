@@ -32,6 +32,7 @@ public class SwaggerConfig {
     @Bean
     public Docket docket() {
         return new Docket (DocumentationType.OAS_30)
+                // 限制只搜索指定包下的 api
                 .select ()
                 .apis (RequestHandlerSelectors.basePackage (prop.getControllerPackage ()))
                 .build ()
@@ -57,6 +58,7 @@ public class SwaggerConfig {
                 // 设置描述
                 .description ("罐头基金——流浪动物的救助筹款系统的设计与实现")
                 // 设置作者信息
-                .contact (authorInfo).build ();
+                .contact (authorInfo)
+                .build ();
     }
 }
