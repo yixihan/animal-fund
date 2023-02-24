@@ -81,8 +81,19 @@ public class CommentRootServiceImpl extends ServiceImpl<CommentRootMapper, Comme
     
     @Override
     public void delRootComment(Long rootCommentId) {
+        // 删除留言
         Assert.isTrue (removeById (rootCommentId), BizCodeEnum.FAILED_TYPE_BUSINESS);
+    
+        // 删除留言回复
+        List<Long> replyIdList = replyService.lambdaQuery ()
+                .select (CommentReply::getId)
+                .eq (CommentReply::getRootId, rootCommentId)
+                .list ()
+                .stream ()
+                .map (CommentReply::getId)
+                .collect(Collectors.toList());
         
+        Assert.isTrue (replyService.removeByIds (replyIdList));
     }
     
     @Override
