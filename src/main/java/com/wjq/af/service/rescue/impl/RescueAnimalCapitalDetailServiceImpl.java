@@ -17,7 +17,7 @@ import com.wjq.af.service.rescue.RescueAnimalCapitalDetailService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wjq.af.service.rescue.RescueAnimalStatusService;
 import com.wjq.af.utils.Assert;
-import com.wjq.af.utils.PageUtils;
+import com.wjq.af.utils.PageUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -84,9 +84,9 @@ public class RescueAnimalCapitalDetailServiceImpl extends ServiceImpl<RescueAnim
         Page<RescueAnimalCapitalDetail> page = lambdaQuery ()
                 .eq (RescueAnimalCapitalDetail::getRescueId, req.getRescueId ())
                 .orderByDesc (RescueAnimalCapitalDetail::getCreateTime)
-                .page (PageUtils.toPage (req));
+                .page (PageUtil.toPage (req));
         
-        return PageUtils.pageToPageDtoResult (
+        return PageUtil.pageToPageDtoResult (
                 page,
                 (o) -> BeanUtil.toBean (o, RescueAnimalCapitalDetailDtoResult.class)
         );

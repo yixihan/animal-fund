@@ -6,7 +6,7 @@ import com.wjq.af.dto.response.JsonResponse;
 import com.wjq.af.dto.response.auth.AuthDtoResult;
 import com.wjq.af.service.auth.AuthService;
 import com.wjq.af.utils.Assert;
-import com.wjq.af.utils.ValidationUtils;
+import com.wjq.af.utils.ValidationUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -40,8 +40,8 @@ public class AuthController {
     @PostMapping(value = "/login", produces = "application/json")
     public JsonResponse<AuthDtoResult> login(@RequestBody @Valid AuthDtoReq req) {
         // 参数校验
-        Assert.isTrue (ValidationUtils.validateMobile (req.getMobile ()));
-        Assert.isTrue (ValidationUtils.validatePassword (req.getPassword ()));
+        Assert.isTrue (ValidationUtil.validateMobile (req.getMobile ()));
+        Assert.isTrue (ValidationUtil.validatePassword (req.getPassword ()));
         
         return JsonResponse.ok (service.login (req));
     }
@@ -50,8 +50,8 @@ public class AuthController {
     @PostMapping(value = "/reset/password", produces = "application/json")
     public void resetPassword(@RequestBody @Valid ResetPasswordDtoReq req) {
         // 参数校验
-        Assert.isTrue (ValidationUtils.validateEmail (req.getEmail ()));
-        Assert.isTrue (ValidationUtils.validatePassword (req.getPassword ()));
+        Assert.isTrue (ValidationUtil.validateEmail (req.getEmail ()));
+        Assert.isTrue (ValidationUtil.validatePassword (req.getPassword ()));
         
         service.resetPassword (req);
     }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * description
+ * 查询救援动物状态-dtoReq
  *
  * @author yixihan
  * @date 2023/2/21 11:25

@@ -10,7 +10,7 @@ import com.wjq.af.dto.response.JsonResponse;
 import com.wjq.af.dto.response.user.UserDtoResult;
 import com.wjq.af.service.user.UserService;
 import com.wjq.af.utils.Assert;
-import com.wjq.af.utils.ValidationUtils;
+import com.wjq.af.utils.ValidationUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -92,11 +92,11 @@ public class UserController {
      * @param req 请求参数
      */
     private void validateRegisterUser(RegisterUserDtoReq req) {
-        Assert.isTrue (ValidationUtils.validateMobile (req.getUserMobile ()));
-        Assert.isTrue (ValidationUtils.validateEmail (req.getUserEmail ()));
-        Assert.isTrue (ValidationUtils.validatePassword (req.getUserPassword ()));
-        Assert.isTrue (ValidationUtils.validateUserName (req.getUserFullName ()));
-        Assert.isTrue (ValidationUtils.validateUserName (req.getUserNickName ()));
-        Assert.isTrue (ValidationUtils.validateIdCard (req.getUserIdCard ()));
+        Assert.isTrue (ValidationUtil.validateMobile (req.getUserMobile ()));
+        Assert.isTrue (ValidationUtil.validateEmail (req.getUserEmail ()));
+        Assert.isTrue (ValidationUtil.validatePassword (req.getUserPassword ()));
+        Assert.isTrue (ValidationUtil.validateUserName (req.getUserFullName ()));
+        Assert.isTrue (ValidationUtil.validateUserName (req.getUserNickName ()));
+        Assert.isTrue (ValidationUtil.validateIdCard (req.getUserIdCard ()));
     }
 }

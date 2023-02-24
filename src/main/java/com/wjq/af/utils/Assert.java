@@ -18,9 +18,7 @@ public class Assert {
      * @param enums      指定断言不通过时抛出的异常信息 {@link BizCodeEnum}
      */
     public static void isTrue(boolean expression, BizCodeEnum enums) {
-        if (!expression) {
-            throw new BizException (enums);
-        }
+        isTrue (expression, new BizException (enums));
     }
     
     /**
@@ -41,9 +39,7 @@ public class Assert {
      * @param expression 布尔值
      */
     public static void isTrue(boolean expression) {
-        if (!expression) {
-            throw new BizException (BizCodeEnum.PARAMS_VALID_ERR);
-        }
+        isTrue (expression, BizCodeEnum.PARAMS_VALID_ERR);
     }
     
     /**
@@ -53,9 +49,7 @@ public class Assert {
      * @param enums      指定断言不通过时抛出的异常信息 {@link BizCodeEnum}
      */
     public static void isFalse(boolean expression, BizCodeEnum enums) {
-        if (expression) {
-            throw new BizException (enums);
-        }
+        isFalse (expression, new BizException (enums));
     }
     
     /**
@@ -76,9 +70,7 @@ public class Assert {
      * @param expression 布尔值
      */
     public static void isFalse(boolean expression) {
-        if (expression) {
-            throw new BizException (BizCodeEnum.PARAMS_VALID_ERR);
-        }
+        isFalse (expression, BizCodeEnum.PARAMS_VALID_ERR);
     }
     
     /**
@@ -88,9 +80,7 @@ public class Assert {
      * @param enums 指定断言不通过时抛出的异常信息 {@link BizCodeEnum}
      */
     public static void notNull(Object obj, BizCodeEnum enums) {
-        if (obj == null) {
-            throw new BizException (enums);
-        }
+        notNull (obj, new BizException (enums));
     }
     
     /**
@@ -111,13 +101,11 @@ public class Assert {
      * @param obj 对象
      */
     public static void notNull(Object obj) {
-        if (obj == null) {
-            throw new BizException (BizCodeEnum.PARAMS_VALID_ERR);
-        }
+       notNull (obj, BizCodeEnum.PARAMS_VALID_ERR);
     }
     
     /**
-     * 断言对象是否为 {@code  null}，如果不为 {@code null} 抛出抛出给定的异常<br>
+     * 断言对象是否为 {@code  null}，如果不为 {@code null} 抛出给定的异常<br>
      *
      * @param obj 对象
      * @param e 指定断言不通过时抛出的异常
@@ -126,5 +114,24 @@ public class Assert {
         if (obj == null) {
             throw e;
         }
+    }
+    
+    /**
+     * 断言对象是否为 {@code  null}，如果不为 {@code null} 抛出给定的异常<br>
+     *
+     * @param obj   对象
+     * @param enums 指定断言不通过时抛出的异常信息 {@link BizCodeEnum}
+     */
+    public static void isNull(Object obj, BizCodeEnum enums) {
+        isNull (obj, new BizException (enums));
+    }
+    
+    /**
+     * 断言对象是否为 {@code  null}，如果不为 {@code null} 抛出 {@code BizCodeEnum.PARAMS_VALID_ERR}<br>
+     *
+     * @param obj   对象
+     */
+    public static void isNull(Object obj) {
+        isNull (obj, BizCodeEnum.PARAMS_VALID_ERR);
     }
 }

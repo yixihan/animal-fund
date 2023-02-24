@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * @date 2023/2/15 15:14
  */
 @SuppressWarnings("all")
-public class PageUtils {
+public class PageUtil {
     
     /**
      * {@code Page<K> -> Page<V>}

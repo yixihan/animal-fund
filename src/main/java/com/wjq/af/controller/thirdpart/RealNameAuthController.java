@@ -3,7 +3,7 @@ package com.wjq.af.controller.thirdpart;
 import com.wjq.af.dto.request.thirdpart.RealNameAuthDtoReq;
 import com.wjq.af.service.thirdpart.RealNameAuthService;
 import com.wjq.af.utils.Assert;
-import com.wjq.af.utils.ValidationUtils;
+import com.wjq.af.utils.ValidationUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class RealNameAuthController {
     @PostMapping(value = "/validate", produces = "application/json")
     public void auth (@RequestBody @Valid RealNameAuthDtoReq req) {
         // 参数校验
-        Assert.isTrue (ValidationUtils.validateIdCard (req.getIdCard ()));
+        Assert.isTrue (ValidationUtil.validateIdCard (req.getIdCard ()));
         
         service.auth (req);
     }

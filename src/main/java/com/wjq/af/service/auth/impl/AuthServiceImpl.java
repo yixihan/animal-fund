@@ -14,7 +14,7 @@ import com.wjq.af.service.auth.AuthService;
 import com.wjq.af.service.thirdpart.EmailService;
 import com.wjq.af.service.user.UserService;
 import com.wjq.af.utils.Assert;
-import com.wjq.af.utils.JwtUtils;
+import com.wjq.af.utils.JwtUtil;
 import com.wjq.af.utils.MD5Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -62,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
         Map<String, Object> payload = new HashMap<> (16);
         payload.put ("userId", user.getId ());
         payload.put ("userName", user.getUserNickName ());
-        String token = JwtUtils.createJwtToken (user.getUserPassword (), payload);
+        String token = JwtUtil.createJwtToken (user.getUserPassword (), payload);
         
         // 登录
         return tokenService.authentication (token);

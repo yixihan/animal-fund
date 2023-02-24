@@ -25,7 +25,7 @@ import com.wjq.af.service.comment.CommentReplyService;
 import com.wjq.af.service.comment.CommentReportService;
 import com.wjq.af.service.comment.CommentRootService;
 import com.wjq.af.utils.Assert;
-import com.wjq.af.utils.PageUtils;
+import com.wjq.af.utils.PageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -100,10 +100,10 @@ public class CommentRootServiceImpl extends ServiceImpl<CommentRootMapper, Comme
         // 分页查询留言板
         Page<CommentRoot> rootPage = lambdaQuery ()
                 .orderByDesc (CommentRoot::getCreateTime)
-                .page (PageUtils.toPage (req));
+                .page (PageUtil.toPage (req));
     
         // 转换为 RootCommentDetailDtoResult 格式
-        PageDtoResult<RootCommentDetailDtoResult> pageDtoResult = PageUtils.pageToPageDtoResult (
+        PageDtoResult<RootCommentDetailDtoResult> pageDtoResult = PageUtil.pageToPageDtoResult (
                 rootPage,
                 (o) -> BeanUtil.toBean (o, RootCommentDetailDtoResult.class)
         );
@@ -130,10 +130,10 @@ public class CommentRootServiceImpl extends ServiceImpl<CommentRootMapper, Comme
         Page<CommentReply> rootPage = replyService.lambdaQuery ()
                 .eq (CommentReply::getRootId, req.getRootId ())
                 .orderByDesc (CommentReply::getCreateTime)
-                .page (PageUtils.toPage (req));
+                .page (PageUtil.toPage (req));
     
         // 转换为 RootCommentDetailDtoResult 格式
-        return PageUtils.pageToPageDtoResult (
+        return PageUtil.pageToPageDtoResult (
                 rootPage,
                 (o) -> BeanUtil.toBean (o, SonCommentDetailDtoResult.class)
         );

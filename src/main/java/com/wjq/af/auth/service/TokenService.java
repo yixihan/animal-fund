@@ -12,7 +12,7 @@ import com.wjq.af.pojo.user.User;
 import com.wjq.af.service.user.RoleService;
 import com.wjq.af.service.user.UserService;
 import com.wjq.af.utils.Assert;
-import com.wjq.af.utils.JwtUtils;
+import com.wjq.af.utils.JwtUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -51,7 +51,7 @@ public class TokenService {
      */
     public AuthDtoResult authentication(String token) throws BizException {
         // 从 token 种获取 userId
-        Long userId = JwtUtils.analysis (token, USER_ID, Long.class);
+        Long userId = JwtUtil.analysis (token, USER_ID, Long.class);
         
         // 从数据库种获取 user
         User user = userService.getById (userId);
@@ -60,10 +60,10 @@ public class TokenService {
         Assert.notNull (user, BizCodeEnum.ACCOUNT_NOT_FOUND);
         
         // token 过期
-        Assert.isTrue (JwtUtils.validateDate (token), BizCodeEnum.TOKEN_EXPIRED);
+        Assert.isTrue (JwtUtil.validateDate (token), BizCodeEnum.TOKEN_EXPIRED);
         
         // token 错误
-        Assert.isTrue (JwtUtils.validateToken (token, user.getUserPassword ()),
+        Assert.isTrue (JwtUtil.validateToken (token, user.getUserPassword ()),
                 BizCodeEnum.PASSWORD_ERR);
         
         AuthDtoResult authInfo = new AuthDtoResult (

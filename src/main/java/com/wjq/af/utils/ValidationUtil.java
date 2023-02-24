@@ -8,7 +8,7 @@ import cn.hutool.core.util.StrUtil;
  * @author yixihan
  * @date 2023/2/17 10:16
  */
-public class ValidationUtils {
+public class ValidationUtil {
     
     /**
      * 数字

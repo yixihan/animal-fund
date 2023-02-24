@@ -19,7 +19,7 @@ import com.wjq.af.service.rescue.RescueAnimalContributionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wjq.af.service.rescue.RescueAnimalStatusService;
 import com.wjq.af.utils.Assert;
-import com.wjq.af.utils.PageUtils;
+import com.wjq.af.utils.PageUtil;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -76,9 +76,9 @@ public class RescueAnimalContributionServiceImpl extends ServiceImpl<RescueAnima
         Page<RescueAnimalContribution> page = lambdaQuery ()
                 .eq (RescueAnimalContribution::getUserId, req.getUserId ())
                 .orderByDesc (RescueAnimalContribution::getCreateTime)
-                .page (PageUtils.toPage (req));
+                .page (PageUtil.toPage (req));
         
-        return PageUtils.pageToPageDtoResult (
+        return PageUtil.pageToPageDtoResult (
                 page,
                 (o) -> BeanUtil.toBean (o, ContributionDtoResult.class)
         );
@@ -89,9 +89,9 @@ public class RescueAnimalContributionServiceImpl extends ServiceImpl<RescueAnima
         Page<RescueAnimalContribution> page = lambdaQuery ()
                 .eq (RescueAnimalContribution::getRescueId, req.getRescueId ())
                 .orderByDesc (RescueAnimalContribution::getCreateTime)
-                .page (PageUtils.toPage (req));
+                .page (PageUtil.toPage (req));
     
-        return PageUtils.pageToPageDtoResult (
+        return PageUtil.pageToPageDtoResult (
                 page,
                 (o) -> BeanUtil.toBean (o, ContributionDtoResult.class)
         );

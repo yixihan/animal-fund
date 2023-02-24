@@ -35,7 +35,7 @@ import com.wjq.af.service.thirdpart.EmailService;
 import com.wjq.af.service.user.UserRoleService;
 import com.wjq.af.service.user.UserService;
 import com.wjq.af.utils.Assert;
-import com.wjq.af.utils.PageUtils;
+import com.wjq.af.utils.PageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,9 +84,9 @@ public class ExamineServiceImpl implements ExamineService {
         Page<User> page = userService.lambdaQuery ()
                 .eq (User::getExamineStatus, ExamineStatusEnums.UN_EXAMINE)
                 .orderByDesc (User::getUpdateTime)
-                .page (PageUtils.toPage (req));
+                .page (PageUtil.toPage (req));
         
-        return PageUtils.pageToPageDtoResult (
+        return PageUtil.pageToPageDtoResult (
                 page,
                 (o) -> BeanUtil.toBean (o, UserDtoResult.class)
         );
@@ -141,9 +141,9 @@ public class ExamineServiceImpl implements ExamineService {
         Page<RescueAnimalInfo> page = rescueAnimalInfoService.lambdaQuery ()
                 .eq (RescueAnimalInfo::getExamineStatus, ExamineStatusEnums.UN_EXAMINE)
                 .orderByDesc (RescueAnimalInfo::getUpdateTime)
-                .page (PageUtils.toPage (req));
+                .page (PageUtil.toPage (req));
     
-        return PageUtils.pageToPageDtoResult (
+        return PageUtil.pageToPageDtoResult (
                 page,
                 (o) -> BeanUtil.toBean (o, RescueAnimalInfoDtoResult.class)
         );
@@ -201,9 +201,9 @@ public class ExamineServiceImpl implements ExamineService {
         Page<RescueAnimalStatus> page = rescueAnimalStatusService.lambdaQuery ()
                 .eq (RescueAnimalStatus::getExamineStatus, ExamineStatusEnums.UN_EXAMINE)
                 .orderByDesc (RescueAnimalStatus::getUpdateTime)
-                .page (PageUtils.toPage (req));
+                .page (PageUtil.toPage (req));
     
-        return PageUtils.pageToPageDtoResult (
+        return PageUtil.pageToPageDtoResult (
                 page,
                 (o) -> BeanUtil.toBean (o, RescueAnimalStatusDtoResult.class)
         );
@@ -258,9 +258,9 @@ public class ExamineServiceImpl implements ExamineService {
         Page<RescueAnimalCapitalDetail> page = rescueAnimalCapitalDetailService.lambdaQuery ()
                 .eq (RescueAnimalCapitalDetail::getExamineStatus, ExamineStatusEnums.UN_EXAMINE)
                 .orderByDesc (RescueAnimalCapitalDetail::getUpdateTime)
-                .page (PageUtils.toPage (req));
+                .page (PageUtil.toPage (req));
     
-        return PageUtils.pageToPageDtoResult (
+        return PageUtil.pageToPageDtoResult (
                 page,
                 (o) -> BeanUtil.toBean (o, RescueAnimalCapitalDetailDtoResult.class)
         );
@@ -314,9 +314,9 @@ public class ExamineServiceImpl implements ExamineService {
         Page<CommentReport> page = commentReportService.lambdaQuery ()
                 .eq (CommentReport::getReportStatus, ExamineStatusEnums.UN_EXAMINE)
                 .orderByDesc (CommentReport::getUpdateTime)
-                .page (PageUtils.toPage (req));
+                .page (PageUtil.toPage (req));
     
-        return PageUtils.pageToPageDtoResult (
+        return PageUtil.pageToPageDtoResult (
                 page,
                 (o) -> BeanUtil.toBean (o, CommentReportDtoResult.class)
         );

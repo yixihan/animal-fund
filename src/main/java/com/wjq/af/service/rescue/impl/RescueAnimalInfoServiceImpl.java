@@ -16,7 +16,7 @@ import com.wjq.af.mapper.rescue.RescueAnimalInfoMapper;
 import com.wjq.af.service.rescue.RescueAnimalInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wjq.af.utils.Assert;
-import com.wjq.af.utils.PageUtils;
+import com.wjq.af.utils.PageUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -71,9 +71,9 @@ public class RescueAnimalInfoServiceImpl extends ServiceImpl<RescueAnimalInfoMap
                 .eq (StrUtil.isNotBlank (req.getInjuryDegree ()), RescueAnimalInfo::getInjuryDegree, req.getInjuryDegree ())
                 .eq (RescueAnimalInfo::getExamineStatus, ExamineStatusEnums.EXAMINE_SUCCESS.getValue ())
                 .orderByDesc (RescueAnimalInfo::getCreateTime)
-                .page (PageUtils.toPage (req));
+                .page (PageUtil.toPage (req));
         
-        return PageUtils.pageToPageDtoResult (
+        return PageUtil.pageToPageDtoResult (
                 pages,
                 (o) -> BeanUtil.toBean (o, RescueAnimalInfoDtoResult.class)
         );
@@ -87,9 +87,9 @@ public class RescueAnimalInfoServiceImpl extends ServiceImpl<RescueAnimalInfoMap
         Page<RescueAnimalInfo> pages = lambdaQuery ()
                 .eq (RescueAnimalInfo::getUserId, req.getUserId ())
                 .orderByDesc (RescueAnimalInfo::getCreateTime)
-                .page (PageUtils.toPage (req));
+                .page (PageUtil.toPage (req));
     
-        return PageUtils.pageToPageDtoResult (
+        return PageUtil.pageToPageDtoResult (
                 pages,
                 (o) -> BeanUtil.toBean (o, RescueAnimalInfoDtoResult.class)
         );

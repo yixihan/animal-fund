@@ -19,7 +19,7 @@ import java.util.Map;
  * @author yixihan
  * @date 2023/2/15 16:09
  */
-public class JwtUtils {
+public class JwtUtil {
     
     /**
      * JwtToken 的过期时间, 30 天
