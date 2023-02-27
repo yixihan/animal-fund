@@ -63,6 +63,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
     
     @Override
+    public UserDtoResult getUserInfoByEmail(String email) {
+        User user = lambdaQuery ()
+                .eq (User::getUserEmail, email)
+                .one ();
+        Assert.notNull (user, BizCodeEnum.ACCOUNT_NOT_FOUND);
+    
+        return BeanUtil.toBean (user, UserDtoResult.class);
+    }
+    
+    @Override
     @Transactional(rollbackFor = BizException.class)
     public void registerUser(RegisterUserDtoReq req) {
         // 校验手机号

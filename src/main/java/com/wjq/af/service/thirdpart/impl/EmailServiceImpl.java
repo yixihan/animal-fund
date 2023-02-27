@@ -11,6 +11,7 @@ import com.wjq.af.exception.BizException;
 import com.wjq.af.service.template.TemplateEmailService;
 import com.wjq.af.service.thirdpart.CodeService;
 import com.wjq.af.service.thirdpart.EmailService;
+import com.wjq.af.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -37,6 +38,9 @@ public class EmailServiceImpl implements EmailService {
     private CodeService codeService;
     
     @Resource
+    private UserService userService;
+    
+    @Resource
     private TemplateEmailService templateEmailService;
     
     @Resource
@@ -47,6 +51,8 @@ public class EmailServiceImpl implements EmailService {
     
     @Override
     public void send(EmailSendDtoReq dtoReq) {
+        userService.getUserInfoByEmail (dtoReq.getEmail ());
+        
         EmailTemplateEnums emailType = EmailTemplateEnums.valueOf (dtoReq.getType ());
         String keyName = getRedisKey (dtoReq.getEmail (), emailType);
         String emailContent = templateEmailService.getEmailContent (emailType.getId ());
@@ -72,6 +78,7 @@ public class EmailServiceImpl implements EmailService {
     
     @Override
     public void validate(EmailValidateDtoReq dtoReq) {
+        userService.getUserInfoByEmail (dtoReq.getEmail ());
         // 生成 keyName
         EmailTemplateEnums emailType = EmailTemplateEnums.valueOf (dtoReq.getEmailType ());
         String keyName = getRedisKey (dtoReq.getEmail (), emailType);

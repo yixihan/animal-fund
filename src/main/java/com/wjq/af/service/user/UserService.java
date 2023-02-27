@@ -33,6 +33,14 @@ public interface UserService extends IService<User> {
     UserDtoResult getUserInfo(Long userId);
     
     /**
+     * 获取指定用户用户信息
+     *
+     * @param email 用户邮箱
+     * @return {@link UserDtoResult}
+     */
+    UserDtoResult getUserInfoByEmail(String email);
+    
+    /**
      * 注册用户
      *
      * @param req 请求参数

@@ -46,9 +46,15 @@ public class UserController {
     }
     
     @ApiOperation("获取用户信息")
-    @GetMapping(value = "/info", produces = "application/json")
+    @GetMapping(value = "/info/id", produces = "application/json")
     public JsonResponse<UserDtoResult> getCacheUserInfo(@RequestParam("userId") Long userId) {
         return JsonResponse.ok (service.getUserInfo (userId));
+    }
+    
+    @ApiOperation("获取用户信息")
+    @GetMapping(value = "/info/email", produces = "application/json")
+    public JsonResponse<UserDtoResult> getCacheUserInfoByEmail(@RequestParam("email") String email) {
+        return JsonResponse.ok (service.getUserInfoByEmail (email));
     }
     
     @ApiOperation("注册用户")

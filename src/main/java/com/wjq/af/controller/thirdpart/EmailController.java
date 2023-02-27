@@ -3,6 +3,8 @@ package com.wjq.af.controller.thirdpart;
 import com.wjq.af.dto.request.thirdpart.EmailSendDtoReq;
 import com.wjq.af.dto.request.thirdpart.EmailValidateDtoReq;
 import com.wjq.af.service.thirdpart.EmailService;
+import com.wjq.af.utils.Assert;
+import com.wjq.af.utils.ValidationUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +35,15 @@ public class EmailController {
     @ApiOperation("发送邮件")
     @PostMapping(value = "/send/email", produces = "application/json")
     public void send(@RequestBody EmailSendDtoReq req) {
+        Assert.isTrue (ValidationUtil.validateEmail (req.getEmail ()));
         service.send (req);
     }
     
     @ApiOperation("校验邮件验证码")
     @PostMapping(value = "/validate/email", produces = "application/json")
     public void validate(@RequestBody EmailValidateDtoReq req) {
+        Assert.isTrue (ValidationUtil.validateEmail (req.getEmail ()));
+        Assert.notNull (req.getCode ());
         service.validate (req);
     }
 }
