@@ -37,18 +37,14 @@ public class RealNameAuthServiceImpl implements RealNameAuthService {
         Map<String, Object> requestBody = new HashMap<> ();
         requestBody.put ("name", req.getRealName ());
         requestBody.put ("id_number", req.getIdCard ());
-    
         
-        try (HttpResponse response = HttpRequest.post (prop.getUrl ())
-                .auth (String.format (AUTHORIZATION_CONTENT, prop.getAppCode ()))
-                .contentType ("application/x-www-form-urlencoded; charset=UTF-8")
-                .form (requestBody)
-                .execute ()) {
-    
+        
+        try (HttpResponse response = HttpRequest.post (prop.getUrl ()).auth (String.format (AUTHORIZATION_CONTENT, prop.getAppCode ())).contentType ("application/x-www-form-urlencoded; charset=UTF-8").form (requestBody).execute ()) {
+            
             // 获取 http status 400 表示库无
             int status = response.getStatus ();
             if (status == 400) {
-                throw new  BizException("库无");
+                throw new BizException ("库无");
             }
             
             JSONObject body = JSONUtil.parseObj (response.body ());
@@ -58,12 +54,10 @@ public class RealNameAuthServiceImpl implements RealNameAuthService {
             if (!NumberConstant.NUM_1.equals (state)) {
                 throw new BizException (body.getStr ("result_message"));
             }
+        } catch (BizException e) {
+            throw e;
         } catch (Exception e) {
-            if (e instanceof BizException) {
-                throw e;
-            } else {
-                throw new BizException (BizCodeEnum.FAILED_TYPE_BUSINESS);
-            }
+            throw new BizException (BizCodeEnum.FAILED_TYPE_BUSINESS);
         }
         
     }
